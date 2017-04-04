@@ -1,0 +1,79 @@
+﻿@model IEnumerable<AudioRimacPlayer.Models.Song>
+@{
+    ViewBag.Title = "Song";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section scripts
+{
+@Scripts.Render("~/bundles/jquery")
+
+
+    <script type="text/javascript">
+        $("input").focus();
+        $(".song ").hover(
+            function () {
+                
+                $(this).css({ "background-color": "#5d5c5c", "border-bottom": "2px solid white" });
+                //$(this).prev().children(".song-date").find(".song-date-artist").css({ "background-bottom": "0px solid white", "background-color": "green" });
+                $(this).children(".song-date").find(".song-date-title").css({ "font-size": "20px" });
+                $(this).children(".song-date").find(".song-date-artist").css({ "font-size": "21px", "color": "#1073fc" });
+                $(this).children(".song-image").find("img").css({ "margin-left": "3px", "margin-bottom": "3px", "margin-top": "0px" });
+
+            }, function () {
+                $(this).css({ "background-color": "#323131", "border-bottom": "2px solid #979797" });
+                //$(this).prev().css({ "background-bottom": "2px solid #979797" });
+                $(this).children(".song-date").find(".song-date-title").css({ "font-size": "19px" });
+                $(this).children(".song-date").find(".song-date-artist").css({ "font-size": "20px", "color": "#4694ff" });
+                $(this).children(".song-image").find("img").css({ "margin-left": "0px", "margin-bottom": "0px", "margin-top": "3px" });
+
+                
+            }
+        );
+    </script>
+
+}
+
+
+@using (Html.BeginForm("GetSongNameAsync", "Rimac", FormMethod.Post))
+{
+    <input style="color:black" name="search" type="text" x-webkit-speech />
+    <button class="btn btn-primary btn-sm">Szukaj</button>
+}
+
+<div class="row">
+    <div class="col-xs-1 col-lg-4"></div>
+
+    @if (ViewBag.Visible)
+    {
+
+        <div id="songs-items" class="col-xs-10 col-lg-4">
+
+
+            @foreach (var item in Model)
+            {
+                <a href="@Url.Action("PlayMusic", new {id = item.SongId})">
+                    <div class="song col-xs-12 col-lg-12">
+
+                        <div class="song-image col-xs-4 col-lg-3">
+                            <img src="@item.ArtistImagetUrl" />
+
+                        </div>
+                        <div class="song-date col-xs-8 col-lg-9">
+                            <div class="song-date-title col-xs-12 col-lg-12">@item.SongName </div>
+                            <div class="song-date-artist col-xs-12 col-lg-12">@item.ArtistName.ToUpper()</div>
+
+                        </div>
+
+                    </div>
+                </a>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="col-xs-1 col-lg-4"></div>
+
+    }
+    <div class="col-xs-1 col-lg-4"></div>
+</div>

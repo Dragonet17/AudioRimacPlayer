@@ -1,0 +1,373 @@
+﻿@model AudioRimacPlayer.Models.Song
+@{
+    ViewBag.Title = "PlayMusic";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section scripts
+{
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jquer-ui")
+    @Scripts.Render("~/bundles/jquerunobtrajax")
+
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js" async></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.6/highlight.min.js" async></script>
+    <script src="https://www.youtube.com/iframe_api" async></script>
+    <script src="~/Scripts/jquery-ui-1.12.1.js"></script>
+    <script type="text/javascript">
+    var player,
+            time_update_interval = 0;
+
+
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('video-placeholder', {
+                width: 300,
+                height: 150,
+                videoId: '@Model.YouTubeUrl',
+                playerVars: {
+                autoplay: 1,
+                color: 'white'
+
+                },
+                events: {
+                onReady: initialize
+                }
+                });
+                }
+
+                function initialize() {
+
+                // Update the controls on load
+                updateTimerDisplay();
+                updateProgressBar();
+
+                // Clear any old interval.
+                clearInterval(time_update_interval);
+
+                // Start interval to update elapsed time display and
+                // the elapsed part of the progress bar every second.
+                time_update_interval = setInterval(function () {
+                updateTimerDisplay();
+                updateProgressBar();
+                }, 1000);
+
+                player.setVolume(100);
+                $('.volume-input').val(Math.round(player.getVolume()));
+                }
+
+
+                // This function is called by initialize()
+                function updateTimerDisplay() {
+                // Update current time text display.
+                $('#current-time').text(formatTime(player.getCurrentTime()));
+                $('#duration').text(formatTime(player.getDuration()));
+                }
+
+
+                // This function is called by initialize()
+                function updateProgressBar() {
+                // Update the value of our progress bar accordingly.
+                $('#progress-bar').val((player.getCurrentTime() / player.getDuration()) * 100);
+                }
+
+
+                // Progress bar
+
+                $('#progress-bar').on('mouseup touchend', function (e) {
+
+                // Calculate the new time for the video.
+                // new time in seconds = total duration in seconds * ( value of range input / 100 )
+                var newTime = player.getDuration() * (e.target.value / 100);
+
+                // Skip video to new time.
+                player.seekTo(newTime);
+
+                });
+
+
+                // Playback
+
+                $('#play-button').on('click', function () {
+                player.playVideo();
+                });
+
+
+                $('#pause-button').on('click', function () {
+                player.pauseVideo();
+                });
+
+
+                // Sound volume
+
+
+                $('#mute-toggle').on('click', function () {
+                var mute_toggle = $(this);
+
+                if (player.isMuted()) {
+                player.unMute();
+                mute_toggle.text('volume_up');
+                } else {
+                player.mute();
+                mute_toggle.text('volume_off');
+                }
+                });
+
+                $('.volume-input').on('change', function () {
+                player.setVolume($(this).val());
+                });
+
+
+                // Other options
+
+
+                $('#speed').on('change', function () {
+                player.setPlaybackRate($(this).val());
+                });
+
+                $('#quality').on('change', function () {
+                player.setPlaybackQuality($(this).val());
+                });
+
+
+                //// Playlist
+
+
+
+
+                // Helper Functions
+
+                function formatTime(time) {
+                time = Math.round(time);
+
+                var minutes = Math.floor(time / 60),
+                seconds = time - minutes * 60;
+
+                seconds = seconds < 10 ? '0' + seconds : seconds;
+
+                return minutes + ":" + seconds;
+                }
+
+
+                $('pre code').each(function (i, block) {
+                hljs.highlightBlock(block);
+                });
+
+
+                $(function () {
+                $("#slider-vertical").slider({
+                orientation: "vertical",
+                range: "min",
+                min: 0,
+                max: 100,
+                value: 100,
+                slide: function (event, ui) {
+                $("#volume-value").show().delay(1000).fadeOut();
+                $("#amount").val(ui.value);
+                $("#volume-value").text(ui.value);
+                player.setVolume(ui.value);
+                }
+                });
+                $("#amount").val($("#slider-vertical").slider("value"));
+                $("#volume-value").text($("#slider-vertical").slider("value"));
+                });
+
+    </script>
+    <script src="http://cdn.tutorialzine.com/misc/enhance/v3.js" async></script>
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("html, body").delay(2000).animate({ scrollTop: '50px' }, 2000);
+            //$("body").animate({ backgroundColor: '#2B353E' }, 3000);
+            $("h2").css({ "color": "#1073fc" });
+            $("img:first").fadeTo(5000, 1);
+            $("img:first").css({ borderColor: "black", borderStyle: "solid" }).animate({ borderWidth: '5px' }, 1000, 'linear');
+            $(".player-buttons").animate({ backgroundColor: '#717070' }, 6000);
+            $("#play-button,#pause-button").hover(
+                function () {
+                    $(".player-buttons").animate({ backgroundColor: 'white' }, 500);
+
+                },
+                function () {
+                    $(".player-buttons").animate({ backgroundColor: '#717070' }, 500);
+
+                }
+            );
+
+            $("#pause-button").click(function () {
+                $(this).toggleClass("display-none");
+                $("#play-button").toggleClass("display-none");
+            });
+            $("#play-button").click(function () {
+                $(this).toggleClass("display-none");
+                $("#pause-button").toggleClass("display-none");
+            });
+            $("#youtube-btn-black").click(function () {
+                $(this).toggleClass("display-none");
+                $("#youtube-btn-red").toggleClass("display-none");
+                $("#yt-video-and-covert-img").animate({ width: '6px' }, 1000);
+                setTimeout(function () {
+                    $("#yt-video-and-covert-img").animate({ height: '150px' }, 1000);
+                }, 1000);
+                setTimeout(function () {
+                    $("#yt-video-and-covert-img").animate({ width: '300px' }, 1000);
+                    $("#covert-img").toggleClass("display-none");
+                    $("#video-placeholder").toggleClass("display-none");
+
+                }, 2000);
+                setTimeout(function () {
+                    $("#yt-video-and-covert-img").css({ "width": "302px", "height": "152px", "border": "1px solid #575353" });
+
+                }, 3000);
+                //$("#player-background").stop().animate({
+                //    'background-position-x': '0px',
+                //    'background-position-y': '350px'
+                //}, 2500, 'linear');
+            });
+            $("#youtube-btn-red").click(function () {
+                $(this).toggleClass("display-none");
+                $("#youtube-btn-black").toggleClass("display-none");
+                $("#yt-video-and-covert-img").animate({ width: '6px' }, 1000);
+                setTimeout(function () {
+                    $("#yt-video-and-covert-img").animate({ height: '303px' }, 1000);
+                    $("#covert-img").toggleClass("display-none");
+                    $("#video-placeholder").toggleClass("display-none");
+                }, 1000);
+                setTimeout(function () {
+                    $("#yt-video-and-covert-img").animate({ width: '303px' }, 1000);
+                }, 2000);
+                setTimeout(function () {
+                    $("#yt-video-and-covert-img").css({ "width": "303px", "height": "303px", "border": "1px solid #575353" });
+
+                }, 3000);
+                //$("#player-background").stop().animate({
+                //    'background-position-x': '0px',
+                //    'background-position-y': '250px'
+                //}, 2500, 'linear');
+            });
+
+
+        });
+    </script>
+    <script src="http://cdn.tutorialzine.com/misc/enhance/v3.js" async></script>
+
+}
+@section styles{
+    <link href="~/Content/rimac-player/AudioProgressBar.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/themes/base/jquery-ui.css" rel="stylesheet" />
+    <style>
+        .ui-widget-header {
+            background: #104471;
+        }
+
+        .ui-widget-content {
+            background: #494949;
+        }
+
+        .ui-slider-vertical {
+            width: .6em;
+        }
+
+        #slider-vertical span {
+            width: 1.1em;
+            height: 1.1em;
+        }
+
+        body {
+            background-image: url('../../Content/rimac-player/img/Black Music Backgrounds  wallpaper wallpaper hd background desktop.jpg');
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center;
+            background-position: 00px 0px;
+        }
+    </style>
+}
+
+
+
+
+@using (Html.BeginForm("GetSongName", "Rimac", FormMethod.Post))
+{
+    <input style="color: black" name="search" type="text" x-webkit-speech />
+    <button class="btn btn-primary btn-sm" type="submit">Szukaj</button>
+}
+
+
+@if (Session["albumsongs"] != null || Session["songs"] != null)
+{
+
+
+
+    <div class="row">
+        <div class="col-xs-1 col-lg-4"></div>
+        <div class="col-xs-10 col-lg-4">
+
+            <div class="col-xs-12 col-lg-12" id="music-player">
+                <div id="yt-video-and-covert-img">
+                    <img id="covert-img" style="border-radius: 35% / 8%;" src="@Model.ArtistImagetUrl" />
+                    <div style="" class="display-none" id="video-placeholder"></div>
+
+                </div>
+                <div id="player-background" class="col-xs-12 col-lg-12">
+
+                    <div class="col-xs-12 col-lg-12">
+                        <span class="artist-name">@Model.ArtistName</span>
+                        <span class="song-name">@Model.SongName</span>
+                    </div>
+
+
+                    <div class="col-xs-12 col-lg-12">
+                        <div class="col-xs-12 col-lg-12" style="padding: 0;">
+                            <input style="margin-top: 20px; height: 10px; border: 0.1px solid gray; border-radius: 25px;" type="range" id="progress-bar" value="0">
+                        </div>
+                        <div class="col-xs-2 col-lg-2" style="padding: 0;">
+                            <span id="current-time" style="display: block; margin-left: 0px; margin-top: 10px; font-size: 15px; font-weight: bold; color: lightgrey;">0:00</span>
+                        </div>
+
+                        <div class="col-xs-8 col-lg-8" style="padding: 0;">
+                            <div id="volume-value" style="display: none; width: 30px; height: 30px; position: absolute; right: 5px; top: 60px; font-size: 17px; font-weight: bold; color: lightgrey;"></div>
+                        </div>
+                        <div class="col-xs-2 col-lg-2" style="padding: 0;">
+                            <span id="duration" style="display: block; margin-right: -20px; margin-top: 10px; font-size: 15px; font-weight: bold; color: lightgrey;">0:00</span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-xs-10 col-lg-10">
+                        <div style="position: absolute; left: 25px;top: 10px;">
+                            <img id="youtube-btn-red" class="display-none" src="~/Content/rimac-player/img/yt-red.png" style="width: 25px; height: 25px; opacity: 1;" />
+                            <img id="youtube-btn-black" src="~/Content/rimac-player/img/yt-black.png" style="width: 25px; height: 25px; opacity:1;" />
+                            @using (Html.BeginForm("AddToTopList", "Rimac", FormMethod.Post))
+                            {
+                                @Html.HiddenFor(m => m.SongName)
+                                @Html.HiddenFor(m => m.ArtistName)
+                                @Html.HiddenFor(m => m.ArtistImagetUrl)
+                                @Html.HiddenFor(m => m.YouTubeUrl)
+                                <button class="btn btn-success btn-sm btn-addToTopList" type="submit" style="">+</button>
+                            }
+                        </div>
+                        <div class="player-buttons">
+
+                            <img id="play-button" class="display-none" src="~/Content/rimac-player/img/61066.svg" style="width: 40px; height: 40px; opacity: 1;" />
+                            <img id="pause-button" src="~/Content/rimac-player/img/pause - btn.svg" style="width: 40px; height: 40px; opacity: 1;" />
+
+                        </div>
+                    </div>
+
+                    <div class="col-xs-1 col-lg-1" style="margin-top: 10px;">
+
+                        <div id="slider-vertical" class="volume-input" style="height: 55px; margin: 0; padding: 0;"></div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="col-xs-1 col-lg-4">
+
+        </div>
+
+    </div>
+}

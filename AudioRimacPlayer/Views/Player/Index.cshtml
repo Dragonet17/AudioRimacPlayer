@@ -1,0 +1,57 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_PlayerLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-lg-4 col-xs-1"></div>
+    <div class="col-lg-4 col-xs-10" style="margin-top: 50px;">
+        <img style="display: block;height: 200px; width: 200px; margin-bottom: 25px; margin-left: auto; margin-right: auto;" src="~/Content/rimac-player/img/RimacW(1500x1500).jpg" />
+
+        <table style="margin-left:auto;margin-right:auto;">
+            <tr>
+                <td><b>USER</b></td>
+            </tr>
+            <tr>
+                <td><input type="text" style="color:black;" /></td>
+
+            </tr>
+            <tr>
+                <td><b>PASSWORD</b></td>
+
+            </tr>
+            <tr>
+                <td><input type="password" style="color:black;" /></td>
+
+            </tr>
+            <tr>
+                <td>
+                    <a href="@Url.Action("Player","Player")"><button class="btn btn-primary">Zaloguj</button></a>
+                    <button class="btn btn-success" style="margin-left: 15px;">Zarejestruj</button>
+
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    <button class="btn btn-primary btn-lg">Facebook</button>
+                </td>
+
+            </tr>
+
+            <tr>
+                <td>
+                    <button class="btn btn-success btn-lg">Google</button>
+                </td>
+
+
+            </tr>
+        </table>
+
+    </div>
+    <div class="col-lg-4 col-xs-1"></div>
+
+</div>
+
+

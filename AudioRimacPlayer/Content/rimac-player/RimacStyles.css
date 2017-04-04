@@ -1,0 +1,246 @@
+﻿body {
+    background-color: #323131;
+    color: lightgrey;
+    text-align: center;
+}
+
+table td {
+    padding-bottom: 15px;
+}
+
+#songs-items {
+    padding: 0 !important;
+    margin-top: 30px;
+}
+
+.song {
+    padding: 0;
+    margin: 0;
+    /*border-left: 2px solid #323131;
+    border-right: 2px solid #323131;
+    border-top: 2px solid #323131;*/
+    border-bottom: 2px solid #979797;
+    background-color: #323131;
+    -webkit-transition: background-color 800ms linear;
+    -moz-transition: background-color 800ms linear;
+    -o-transition: background-color 800ms linear;
+    -ms-transition: background-color 800ms linear;
+    transition: background-color 800ms linear;
+}
+
+    .song:hover {
+        cursor: pointer;
+        background-color: rgb(90, 90, 90);
+    }
+
+
+    .song .song-date {
+        /*border: 2px solid #979797;*/
+        padding: 0;
+        margin: 0;
+    }
+
+        .song .song-date .song-date-title, .song .song-date .song-date-artist {
+            padding: 0;
+            margin: 0;
+            /*border: 2px solid #979797;*/
+            height: 45px;
+            text-align: center;
+        }
+
+div {
+    text-overflow: ellipsis !important;
+}
+
+.song .song-date .song-date-title {
+    font-size: 19px;
+    padding-top: 10px;
+    color: white;
+    overflow: hidden
+}
+
+
+.song .song-date .song-date-artist {
+    color: #4694ff;
+    font-size: 20px;
+    padding-top: 5px;
+    overflow: hidden
+}
+
+.song .song-image {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+
+    .song .song-image img {
+        height: 95px;
+        width: 100%;
+        margin-top: 3px;
+    }
+
+.song-title {
+    font-size: 18px;
+}
+
+footer {
+    display: none;
+}
+/*
+    ---------> PLAYMUSIC <---------
+    
+    */
+#music-player .artist-name {
+    display: block;
+    margin-top: 5px;
+    font-size: 26px;
+    /*color: #006fc3;*/
+    color: white;
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+#music-player .song-name {
+    display: block;
+    margin-top: 5px;
+    font-size: 18px;
+    color: #79a0bd;
+    font-weight: bold;
+}
+
+#music-player img:first-child {
+    /*margin-top: 20px;*/
+    width: 300px;
+    height: 300px;
+    opacity: 0.1;
+}
+/*#youtube-audio {
+    margin-top: 15px;
+    margin-left: 0px;
+    width: 40px;
+}*/
+
+/*Video Sound Progress Bar*/
+.song-time {
+    font-size: 20px !important;
+    font-weight: bold !important;
+    color: lightgrey !important;
+}
+
+#progress-bar:hover {
+    cursor: pointer;
+}
+
+.player-buttons {
+    width: 40px;
+    height: 40px;
+    background: white;
+    border-radius: 50%;
+    position: absolute;
+    top: 5px;
+    left: 130px;
+}
+
+    .player-buttons:hover {
+        cursor: pointer;
+        background: white;
+    }
+
+.display-none {
+    display: none;
+}
+
+#yt-video-and-covert-img {
+    border: 1px solid #575353;
+    margin-top: 5px;
+    width: 303px;
+    height: 303px;
+    border-radius: 35% / 8%;
+}
+
+#youtube-btn-red:hover, #youtube-btn-black:hover {
+    cursor: pointer;
+}
+
+#player-background {
+    margin-top: 5px;
+    background-image: url('img/20746_cityscape_dual_screen_dual_monitor_dark_city.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+    background-size: contain;
+    background-position: 100px 250px;
+    width: 95%;
+    height: 230px;
+    border: 1px solid white;
+    border-radius: 100px /25px;
+    margin-left: 0px;
+}
+
+.btn-addToTopList {
+    position: relative;
+    top: 6px;
+    /*left: 10px;*/
+    width: 20px;
+    height: 20px;
+    background-color: #292e6d;
+    border-radius: 100px /25px;
+    padding: 0;
+    font-weight:700; 
+}
+.btn-removeFromTopList {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    font-weight: 700;
+    background-color: #922841;
+}
+    .btn-removeFromTopList:hover {
+        background-color: #582431;
+    }
+
+.searching-button {
+    border: 1px solid #b7b7b7;
+    color: white;
+    padding: 6px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    margin: 4px 2px;
+    cursor: pointer;
+    background-color: #555555;
+    font-weight: bold;
+}
+
+.searching-button-click {
+    padding: 6px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    margin: 4px 2px;
+    cursor: pointer;
+    font-weight: bold;
+    background-color: #dadada;
+    color: black;
+    border: solid 2px #555555;
+}
+#button-artist {
+    margin-left: 25px;
+    text-decoration: none;
+}
+#buttons-searching {
+    margin-top: 15px;
+}
+#buttons-searching a:hover {
+    text-decoration: none;
+    color: initial;
+}
+#buttons-searching a:visited {
+        text-decoration: none;
+        color: black;
+    }

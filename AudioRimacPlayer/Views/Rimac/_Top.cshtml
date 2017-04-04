@@ -1,0 +1,44 @@
+﻿@modelIEnumerable<AudioRimacPlayer.DAL.PlayerSong>
+
+
+
+
+<div id="songs-items" class="col-xs-12 col-lg-12">
+
+    <h1 style="margin-top: 0; margin-bottom: 25px; color: #3764a2;text-shadow: 1px 1px 1px rgba(150, 150, 150, 1);">Artist</h1>
+    <h2 style="margin-top: 0;margin-bottom: 50px; color: #7597c7;text-shadow: 1px 1px 1px rgba(150, 150, 150, 1);">Song Name</h2>
+    @if (Model.Count() > 0)
+    {
+
+        foreach (var item in Model)
+        {
+            <a href="@Url.Action("PlayMusic", new { id = item.Id})">
+                <div class="song col-xs-12 col-lg-12">
+
+                    <div class="song-image col-xs-4 col-lg-3">
+                        <img src="@item.SongArtistImgUrl" />
+
+                    </div>
+                    <div class="song-date col-xs-8 col-lg-9">
+                        <div class="song-date-title col-xs-12 col-lg-12">@item.SongName </div>
+                        <div class="song-date-artist col-xs-12 col-lg-12">@item.SongArtist</div>
+                        @Ajax.ActionLink("x", "RemoveSongFromTheTopList", "Rimac",
+                       new { id = item.Id }, 
+                       new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "songs-reload" },
+                       new { @class = "btn btn-warning btn-sm btn-removeFromTopList display-none" })
+
+                        @*<button class="btn btn-warning btn-sm btn-removeFromTopList" type="submit" style="">x</button>*@
+                    </div>
+
+                </div>
+            </a>
+        }
+    }
+    else
+    {
+        <div class="song col-xs-12 col-lg-12">
+            <h4 style="margin-top: 25px; color: #3764a2;text-shadow: 1px 1px 1px rgba(150, 150, 150, 1);">Lack of elements</h4>
+        </div>
+    }
+</div>
+
