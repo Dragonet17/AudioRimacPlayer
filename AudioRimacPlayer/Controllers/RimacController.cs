@@ -274,9 +274,9 @@ namespace AudioRimacPlayer.Controllers
 
         PlayerContext dbplayer = new PlayerContext();
 
-        public  ActionResult TopList()
+        public async  Task<ActionResult> TopList()
         {
-            var topSongs = PlayerSong.RenderTopList(dbplayer).Result;
+            var topSongs = await  PlayerSong.RenderTopList(dbplayer);
             //var topSongs = Task.Run(PlayerSong.RenderTopList(dbplayer)) ;
 
             return View(topSongs);

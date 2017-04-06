@@ -22,8 +22,8 @@
                         <div class="song-date-title col-xs-12 col-lg-12">@item.SongName </div>
                         <div class="song-date-artist col-xs-12 col-lg-12">@item.SongArtist</div>
                         @Ajax.ActionLink("x", "RemoveSongFromTheTopList", "Rimac",
-                       new { id = item.Id }, 
-                       new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "songs-reload" },
+                       new { id = item.Id },
+                       new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "songs-reload",OnComplete = "ShowX",OnBegin = "ShowX" },
                        new { @class = "btn btn-warning btn-sm btn-removeFromTopList display-none" })
 
                         @*<button class="btn btn-warning btn-sm btn-removeFromTopList" type="submit" style="">x</button>*@
