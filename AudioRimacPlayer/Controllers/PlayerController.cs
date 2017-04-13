@@ -13,6 +13,7 @@ namespace AudioRimacPlayer.Controllers
         // GET: Player
         public ActionResult Index()
         {
+        
             return View();
         }
 
@@ -20,28 +21,43 @@ namespace AudioRimacPlayer.Controllers
         {
             return View();
         }
-
-        public async Task<ActionResult> Player(string parialname, string search, int? id)
+        PlayerViewModel vm = new PlayerViewModel();
+        public async Task<ActionResult> Player(string partialname, string search, int? id, string form)
         {
-            PlayerViewModel vm = new PlayerViewModel();
-            PlayerViewModel.FormPartialName = "_Songs";
+            if (Session["player"] != null)
+            {
+             vm = (PlayerViewModel)Session["player"];
+
+            }
+            vm.FormPartialName = PlayerViewModel.SetFormPartialName(form);
 
             try
             {
                 if (Request.IsAjaxRequest())
                 {
-                    vm.PartialName = parialname;
-                    switch (parialname)
+
+                    vm.PartialName = partialname;
+                    
+
+                    switch (partialname)
                     {
                         case "_Songs":
                             {
+                                if (search !=null)
+                                {
                                 vm.Songs = await Models.Song.GetSongsListAsync(search);
+                                }
+                                
                                 break;
                             }
 
-                        case "_Artist":
+                        case "_Artists":
                             {
-                                vm.Artists = await Models.Artist.GetArtistAsync(search);
+                                if (search != null)
+                                {
+                                    vm.Artists = await Models.Artist.GetArtistAsync(search);
+                                }
+                                
                                 break;
                             }
 
@@ -62,13 +78,12 @@ namespace AudioRimacPlayer.Controllers
 
                         default:
                             {
-                                return RedirectToAction("Error");
+                                return PartialView("Error");
                             }
                     }
                     Session["player"] = vm;
                     return RedirectToAction("RenderParialView");
                 }
-                vm.PartialName = "_Empty";
                 Session["player"] = vm;
                 return View(vm);
             }
@@ -78,7 +93,14 @@ namespace AudioRimacPlayer.Controllers
             }
         }
 
-        public ActionResult RenderParialView(string form)
+        public ActionResult ChangeForm()
+        {
+        
+
+            return PartialView("_FormToSearch");
+        }
+
+        public ActionResult RenderParialView()
         {
             var vm = (PlayerViewModel)Session["player"];
 
@@ -89,17 +111,13 @@ namespace AudioRimacPlayer.Controllers
                 {
                     vm.PartialName = "_Empty";
                 }
-                if (form!=null)
-                {
-                PlayerViewModel.FormPartialName = form;
 
-                }
-               
+
                 return PartialView(vm.PartialName, vm);
             }
             catch (Exception)
             {
-                return RedirectToAction("Error");
+                return PartialView("_Error");
             }
 
 

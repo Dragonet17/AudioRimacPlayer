@@ -207,6 +207,6 @@ C:\Users\Dragonet\Documents\Visual Studio 2017\Projects\AudioRimacPlayer\AudioRi
 C:\Users\Dragonet\Documents\Visual Studio 2017\Projects\AudioRimacPlayer\AudioRimacPlayer\bin\Microsoft.Owin.Security.Google.xml
 C:\Users\Dragonet\Documents\Visual Studio 2017\Projects\AudioRimacPlayer\AudioRimacPlayer\bin\Microsoft.Owin.Security.Twitter.xml
 C:\Users\Dragonet\Documents\Visual Studio 2017\Projects\AudioRimacPlayer\AudioRimacPlayer\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
-C:\Users\Dragonet\Documents\Visual Studio 2017\Projects\AudioRimacPlayer\AudioRimacPlayer\obj\Debug\AudioRimacPlayer.csprojResolveAssemblyReference.cache
 C:\Users\Dragonet\Documents\Visual Studio 2017\Projects\AudioRimacPlayer\AudioRimacPlayer\obj\Debug\AudioRimacPlayer.dll
 C:\Users\Dragonet\Documents\Visual Studio 2017\Projects\AudioRimacPlayer\AudioRimacPlayer\obj\Debug\AudioRimacPlayer.pdb
+C:\Users\Dragonet\Documents\Visual Studio 2017\Projects\AudioRimacPlayer\AudioRimacPlayer\obj\Debug\AudioRimacPlayer.csprojResolveAssemblyReference.cache

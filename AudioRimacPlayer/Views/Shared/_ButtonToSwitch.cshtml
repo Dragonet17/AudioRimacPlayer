@@ -1,0 +1,26 @@
+﻿    @Ajax.ActionLink("Song", "Player", "Player",
+        new { form = "_Songs",partialname = "_Songs" },
+        new AjaxOptions
+        {
+            HttpMethod = "Post",
+            UpdateTargetId = "update",
+            LoadingElementId = "loading",
+            OnBegin = "HideResults",
+            OnComplete = "ShowResults",
+            OnFailure = "ShowError"
+
+        },
+        new { @id = "button-song", @class = "searching-button-click" })
+
+@Ajax.ActionLink("Artist", "Player", "Player",
+    new { form = "_Artists", partialname= "_Artists" },
+    new AjaxOptions
+    {
+        HttpMethod = "POST",
+        UpdateTargetId = "update",
+        LoadingElementId = "loading",
+        OnBegin = "HideResults",
+        OnComplete = "ShowResults",
+        OnFailure = "ShowError"
+    },
+    new { @id = "button-artist", @class = "searching-button" })

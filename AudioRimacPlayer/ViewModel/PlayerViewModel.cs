@@ -16,16 +16,28 @@ namespace AudioRimacPlayer.ViewModel
 
         public string PartialName { get; set; }
 
-        public static  string FormPartialName { get; set; }
+        public string FormPartialName { get; set; }
 
-        //public enum PartialNames
-        //{
-        //    _Songs,
-        //    _Artists,
-        //    _Albums,
-        //    _AlbumsSongs,
-        //    _Empty
-        //}
 
+
+
+        public static string SetFormPartialName(string form)
+        {
+            string[] name = {"_Songs","_Artists" };
+            if (form == "_Songs" && name[0] != "_Songs")
+            {
+                Array.Reverse(name);
+                
+            }
+            if (form == "_Artists" && name[0] != "_Artists")
+            {
+                Array.Reverse(name);
+               
+            }
+
+            return name[0];
+
+
+        }
     }
 }

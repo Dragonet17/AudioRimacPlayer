@@ -1,8 +1,7 @@
-﻿@using AudioRimacPlayer.ViewModel
-@model AudioRimacPlayer.ViewModel.PlayerViewModel
-    @{
-       ViewBag.FormPartialName = PlayerViewModel.FormPartialName;
-    }
+﻿@model AudioRimacPlayer.ViewModel.PlayerViewModel
+
+@Html.Partial("_FormToSearch")
+
 <div class="row">
     <div class="col-xs-1 col-lg-4"></div>
 
@@ -10,29 +9,33 @@
 
         <div id="songs-items" class="col-xs-10 col-lg-4">
 
-
-            @foreach (var item in Model.Songs)
+            @if (Model.Songs!=null)
             {
-                <a href="@Url.Action("PlayMusic","Rimac", new { id = item.SongId })">
-                    <div class="song col-xs-12 col-lg-12">
+                foreach (var item in Model.Songs)
+                 {
+                     <a href="@Url.Action("PlayMusic","Rimac", new { id = item.SongId })">
+                         <div class="song col-xs-12 col-lg-12">
 
-                        <div class="song-image col-xs-4 col-lg-3">
-                            <img src="@item.ArtistImagetUrl" alt="Loading"/>
+                             <div class="song-image col-xs-4 col-lg-3">
+                                 <img src="@item.ArtistImagetUrl" alt="Loading"/>
 
-                        </div>
-                        <div class="song-date col-xs-8 col-lg-9">
-                            <div class="song-date-title col-xs-12 col-lg-12">@item.SongName </div>
-                            <div class="song-date-artist col-xs-12 col-lg-12">@item.ArtistName.ToUpper()</div>
+                             </div>
+                             <div class="song-date col-xs-8 col-lg-9">
+                                 <div class="song-date-title col-xs-12 col-lg-12">@item.SongName </div>
+                                 <div class="song-date-artist col-xs-12 col-lg-12">@item.ArtistName.ToUpper()</div>
 
-                        </div>
+                             </div>
 
-                    </div>
-                </a>
+                         </div>
+                     </a>
+                 }
             }
+
+      
         </div>
-    
-    
     <div class="col-xs-1 col-lg-4"></div>
+    
+
 </div>
 
 

@@ -1,51 +1,19 @@
-﻿@using AudioRimacPlayer.ViewModel
-@model AudioRimacPlayer.ViewModel.PlayerViewModel
+﻿@model AudioRimacPlayer.ViewModel.PlayerViewModel
+
+@using AudioRimacPlayer.ViewModel
 @{
     ViewBag.Title = "Player";
     Layout = "~/Views/Shared/_PlayerLayout.cshtml";
 }
 <div id="buttons-searching">
-    @Ajax.ActionLink("Song", "RenderParialView", "Player",
-        new { form = "_Songs" },
-        new AjaxOptions
-        {
-            HttpMethod = "Post",
-            UpdateTargetId = "update"
-
-        },
-        new { @id = "button-song", @class = "searching-button-click" })
-
-    @Ajax.ActionLink("Artist", "RenderParialView", "Player",
-        new { form = "_Artists" },
-        new AjaxOptions
-        {
-            HttpMethod = "POST",
-            UpdateTargetId = "update"
-        },
-        new { @id = "button-artist", @class = "searching-button" })
+    @Html.Partial("_ButtonToSwitch")
 
 </div>
+
+
 <div id="update">
-    <div id="form" style="margin-top: 15px;">
-        @using (Ajax.BeginForm("Player", "Player",
-                            new { parialname = PlayerViewModel.FormPartialName},
-                            new AjaxOptions
-                            {
-                                HttpMethod = "POST",
-                                UpdateTargetId = "update",
-                                LoadingElementId = "loading",
-                                OnBegin = "HideResults",
-                                OnComplete = "ShowResults",
-                                OnFailure = "ShowError"
-                            }
-
-                            ))
-        {
-            <input style="color:black" name="search" type="text" />
-            <button class="btn btn-primary btn-sm " type="submit">Szukaj</button>
-        }
-    </div>
-
+    
+    
     @Html.Action("RenderParialView")
 </div>
 @Html.Partial("_Loading")
