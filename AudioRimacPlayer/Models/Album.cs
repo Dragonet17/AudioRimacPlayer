@@ -15,7 +15,7 @@ namespace AudioRimacPlayer.Models
 
         public string AlbumCovertUrl { get; protected set; }
 
-        public async static Task<List<Album>> GetArtistAlbumsAsync(Artist artist)
+        public static async Task<List<Album>> GetArtistAlbumsAsync(Artist artist)
         {
             Uri urladdress =
               new Uri(
@@ -55,7 +55,7 @@ namespace AudioRimacPlayer.Models
         }
 
 
-            public async static Task<List<Album>> GetArtistAlbums(Artist artist)
+            public static async Task<List<Album>> GetArtistAlbums(Artist artist)
         {
             Uri urladdress =
               new Uri(

@@ -61,14 +61,14 @@ namespace AudioRimacPlayer.Controllers
                                 break;
                             }
 
-                        case "albums":
+                        case "_Albums":
                             {
                                 var artist = vm.Artists.ToList().Find(item => item.ArtistId == id);
                                 vm.Albums = await Models.Album.GetArtistAlbums(artist);
                                 break;
                             }
 
-                        case "albumssongs":
+                        case "_AlbumSongs":
                             {
                                 var album = vm.Albums.ToList().Find(item => item.AlbumId == id);
                                 vm.AlbumSongs = await Models.Song.GetAlbumSongs(album);

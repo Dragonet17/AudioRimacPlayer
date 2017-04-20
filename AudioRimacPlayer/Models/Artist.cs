@@ -14,10 +14,10 @@ namespace AudioRimacPlayer.Models
     public class Artist
     {
         public int ArtistId { get; protected set; }
-        public string ArtistName { get; protected set; }
+        public string ArtistName { get;  set; }
         public string ArtistImagetUrl { get; protected set; }
 
-        public async static Task<List<Artist>> GetArtistAsync(string search)
+        public static async Task<List<Artist>> GetArtistAsync(string search)
         {
             Uri urladdress =
                new Uri(

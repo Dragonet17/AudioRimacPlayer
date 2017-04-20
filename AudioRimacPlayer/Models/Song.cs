@@ -8,7 +8,6 @@ using System.Web.WebPages;
 using Microsoft.Ajax.Utilities;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Services;
 using Google.Apis.Upload;
@@ -23,12 +22,11 @@ namespace AudioRimacPlayer.Models
 {
     public class Song : Album
     {
-
-        public int SongId { get; private set; }
+        public int SongId { get;  set; }
         //public string ArtistName { get; private set; }
         //public string AlbumName { get; private set; }
 
-        public string SongName { get; private set; }
+        public  string SongName { get;  set; }
 
         //public string GenreName { get; private set; }
         //public string CovertUrl { get; private set; }
@@ -37,7 +35,7 @@ namespace AudioRimacPlayer.Models
         public Dictionary<int, string> albumSongs = new Dictionary<int, string>();
 
 
-        public async static Task<Song> GetYouTubeVideoUrlForSong(Song song)
+        public static async Task<Song> GetYouTubeVideoUrlForSong(Song song)
         {
             var youtubeService = new YouTubeService(new BaseClientService.Initializer()
             {
@@ -45,29 +43,29 @@ namespace AudioRimacPlayer.Models
                 ApplicationName = "RimacAudioPlayer"
             });
 
-            var searchListRequest =  youtubeService.Search.List("snippet");
-            searchListRequest.Q =  $"{song.SongName} {song.ArtistName}";
+            var searchListRequest = youtubeService.Search.List("snippet");
+            searchListRequest.Q = $"{song.SongName} {song.ArtistName}";
             searchListRequest.MaxResults = 2;
 
-            var searchListResponse =await searchListRequest.ExecuteAsync();
-            song.YouTubeUrl =  searchListResponse.Items.First().Id.VideoId;
+            var searchListResponse = await searchListRequest.ExecuteAsync();
+            song.YouTubeUrl = searchListResponse.Items.First().Id.VideoId;
             return song;
         }
 
         public static async Task<string> GetJsonSongsAsync(Uri url)
         {
-            HttpClient client = new HttpClient();            
+            HttpClient client = new HttpClient();
             HttpResponseMessage response = await client.GetAsync(url);
             response.EnsureSuccessStatusCode();
             string responseBody = await response.Content.ReadAsStringAsync();
             return responseBody;
-
         }
+
         public static async Task<List<Song>> GetSongsListAsync(string search)
         {
             Uri urladdress =
-              new Uri(
-                  $"http://ws.audioscrobbler.com/2.0/?method=track.search&track={search}&api_key=f888d5f469cb97bf8a68b72c9c721cbc&format=json");
+                new Uri(
+                    $"http://ws.audioscrobbler.com/2.0/?method=track.search&track={search}&api_key=f888d5f469cb97bf8a68b72c9c721cbc&format=json");
 
             var jsons = await GetJsonSongsAsync(urladdress);
             var jsonobj = JObject.Parse(jsons);
@@ -101,22 +99,19 @@ namespace AudioRimacPlayer.Models
                     addC = addC + 1;
 
                 else songList.Add(song);
-
-
-
             }
 
             //var songs = songList.DistinctBy(m => m.SongName).ToList();
 
-            return  songList;
+            return songList;
         }
 
         // DISABLED - the list of Songs without YoutubeVideoUrl
         public static List<Song> GetSongsList(string search)
         {
             Uri urladdress =
-               new Uri(
-                   $"http://ws.audioscrobbler.com/2.0/?method=track.search&track={search}&api_key=f888d5f469cb97bf8a68b72c9c721cbc&format=json");
+                new Uri(
+                    $"http://ws.audioscrobbler.com/2.0/?method=track.search&track={search}&api_key=f888d5f469cb97bf8a68b72c9c721cbc&format=json");
 
             //var jsons =  GetJsonSongsAsync(search, urladdress).Result;
 
@@ -154,9 +149,6 @@ namespace AudioRimacPlayer.Models
                 if (checkSongTitle.Count > 0)
                     addC = addC + 1;
                 else songList.Add(song);
-
-
-
             }
 
             //var songs = songList.DistinctBy(m => m.SongName).ToList();
@@ -164,11 +156,11 @@ namespace AudioRimacPlayer.Models
             return songList;
         }
 
-        public async static Task<Song> GetAlbumSongs(Album album)
+        public static async Task<Song> GetAlbumSongs(Album album)
         {
             Uri urladdress =
-              new Uri(
-                $"http://ws.audioscrobbler.com/2.0/?method=album.getinfo&api_key=f888d5f469cb97bf8a68b72c9c721cbc&artist={album.ArtistName}&album={album.AlbumName}&format=json");
+                new Uri(
+                    $"http://ws.audioscrobbler.com/2.0/?method=album.getinfo&api_key=f888d5f469cb97bf8a68b72c9c721cbc&artist={album.ArtistName}&album={album.AlbumName}&format=json");
 
             var jsons = await GetJsonSongsAsync(urladdress);
             var jsonobj = JObject.Parse(jsons);
@@ -187,31 +179,24 @@ namespace AudioRimacPlayer.Models
             var trackArray = jsonsearch["tracks"]["track"];
 
 
-
             for (int i = 0; i < trackArray.ToArray().Length - 1; i++)
             {
                 string albumTrack = string.Empty;
                 albumTrack = EncodeStringUtf8(trackArray[i]["name"].ToString());
                 albumTrack = CutString(albumTrack, 26);
                 song.albumSongs.Add(i, albumTrack);
-
             }
-
 
 
             return song;
         }
 
-        public async static Task<Song> GetYoutubeVideoUrlForAlbumSong(Song song, int id)
+        public static async Task<Song> GetYoutubeVideoUrlForAlbumSong(Song song, int id)
         {
-
             song.SongName = song.albumSongs[id];
             song = await GetYouTubeVideoUrlForSong(song);
 
             return song;
         }
-
-       
-
     }
 }

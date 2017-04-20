@@ -2,31 +2,42 @@
 @Html.Partial("_FormToSearch")
 <div class="row">
     <div class="col-xs-1 col-lg-4"></div>
-   
-        <div id="songs-items" class="col-xs-10 col-lg-4">
 
-        @if (Model.Artists!=null)
+    <div id="songs-items" class="col-xs-10 col-lg-4">
+
+        @if (Model.Artists != null)
         {
             foreach (var item in Model.Artists)
-             {
-                 <a href="@Url.Action("Player", "Player", new {id = item.ArtistId})">
-                     <div class="song col-xs-12 col-lg-12">
+            {
+                <div class="song col-xs-12 col-lg-12">
+                    @Ajax.ActionLink(" ", "Player", "Player",
+                        new { partialname = "_Albums", id = item.ArtistId },
+                        new AjaxOptions
+                        {
+                            HttpMethod = "Post",
+                            UpdateTargetId = "update",
+                            LoadingElementId = "loading",
+                            OnBegin = "HideResults",
+                            OnComplete = "ShowResults",
+                            OnFailure = "ShowError"
 
-                         <div class="song-image col-xs-4 col-lg-3">
-                             <img src="@item.ArtistImagetUrl"/>
+                        },
+                        new { @class = "ajax-div" })
+                    <div class="song-image col-xs-4 col-lg-3">
+                        <img src="@item.ArtistImagetUrl" />
 
-                         </div>
-                         <div class="song-date col-xs-8 col-lg-9">
+                    </div>
+                    <div class="song-date col-xs-8 col-lg-9">
 
-                             <div class="song-date-artist col-xs-12 col-lg-12" style="height: 100%; width: 100%; margin-top: 0.8em; color: #a9a9a9; text-shadow: 1px 1px 1px rgba(150, 150, 150, 1);">@item.ArtistName.ToUpper()</div>
+                        <div class="song-date-artist col-xs-12 col-lg-12" style="height: 100%; width: 100%; margin-top: 0.8em; color: #a9a9a9; text-shadow: 1px 1px 1px rgba(150, 150, 150, 1);">@item.ArtistName.ToUpper()</div>
 
-                         </div>
+                    </div>
 
-                     </div>
-                 </a>
-             }
+                </div>
+
+            }
         }
-        </div>
-  
-  <div class="col-xs-1 col-lg-4"></div>
+    </div>
+
+    <div class="col-xs-1 col-lg-4"></div>
 </div>
