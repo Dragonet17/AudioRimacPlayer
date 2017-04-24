@@ -11,33 +11,60 @@ namespace AudioRimacPlayer.ViewModel
         public IEnumerable<Artist> Artists { get; set; }
         public IEnumerable<Album> Albums { get; set; }
         public Song AlbumSongs { get; set; }
-
         public IEnumerable<Song> Songs { get; set; }
+        public Song MusicSong { get; set; }
 
         public string PartialName { get; set; }
 
         public string FormPartialName { get; set; }
+        
+        public string AlbumArtistName { get; set; }
 
-
-
-
-        public static string SetFormPartialName(string form)
+        public PlayerViewModel()
         {
-            string[] name = {"_Songs","_Artists" };
-            if (form == "_Songs" && name[0] != "_Songs")
-            {
-                Array.Reverse(name);
-                
-            }
-            if (form == "_Artists" && name[0] != "_Artists")
-            {
-                Array.Reverse(name);
-               
-            }
-
-            return name[0];
-
-
+            this.FormPartialName = "_Songs";
+            this.PartialName = "_Empty";
         }
+
+        public void SetPartialName(string partialname)
+        {
+            if (partialname == "_Songs" ||
+                partialname == "_Artists" ||
+                partialname == "_Albums" ||
+                partialname == "_AlbumSongs")
+            {
+                this.PartialName = partialname;
+            }
+            else if (partialname == "_MusicAlbumsSongs" || partialname == "_MusicSongs")
+            {
+                this.PartialName = "_Music";
+            }
+            else
+            {
+                throw new Exception();
+            }
+        }
+
+        public  void SetFormPartialName(string form, string partialname)
+        {
+            if (form == "_Songs" && 
+                partialname == "_Songs")
+            {
+                this.FormPartialName = "_Songs";
+
+
+            }
+            if (form == "_Artists" && (
+                partialname == "_Artists" || 
+                partialname == "_Albums" || 
+                partialname == "_AlbumSongs"))
+            {
+                this.FormPartialName = "_Artists";
+
+            }
+            
+        }
+
+
     }
 }

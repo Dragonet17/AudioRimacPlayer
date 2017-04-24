@@ -1,7 +1,5 @@
 ﻿@model AudioRimacPlayer.ViewModel.PlayerViewModel
-
 @Html.Partial("_FormToSearch")
-
 <div class="row">
     <div class="col-xs-1 col-lg-4"></div>
 
@@ -13,9 +11,21 @@
             {
                 foreach (var item in Model.Songs)
                  {
-                     <a href="@Url.Action("PlayMusic","Rimac", new { id = item.SongId })">
+                    
                          <div class="song col-xs-12 col-lg-12">
+                             @Ajax.ActionLink(" ", "Player", "Player",
+                                 new { partialname = "_MusicSongs", id =item.SongId },
+                                 new AjaxOptions
+                                 {
+                                     HttpMethod = "Post",
+                                     UpdateTargetId = "update",
+                                     LoadingElementId = "loading",
+                                     OnBegin = "HideResults",
+                                     OnComplete = "ShowResults",
+                                     OnFailure = "ShowError"
 
+                                 },
+                                 new { @class = "ajax-div" })
                              <div class="song-image col-xs-4 col-lg-3">
                                  <img src="@item.ArtistImagetUrl" alt="Loading"/>
 
@@ -27,7 +37,7 @@
                              </div>
 
                          </div>
-                     </a>
+                    
                  }
             }
 

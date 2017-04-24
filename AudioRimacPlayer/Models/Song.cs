@@ -156,6 +156,7 @@ namespace AudioRimacPlayer.Models
             return songList;
         }
 
+        // AlbumSongs
         public static async Task<Song> GetAlbumSongs(Album album)
         {
             Uri urladdress =
@@ -198,5 +199,6 @@ namespace AudioRimacPlayer.Models
 
             return song;
         }
+
     }
 }

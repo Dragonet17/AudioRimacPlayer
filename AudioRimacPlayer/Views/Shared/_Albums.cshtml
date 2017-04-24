@@ -1,11 +1,11 @@
 ﻿@model AudioRimacPlayer.ViewModel.PlayerViewModel
-
+@Html.Partial("_FormToSearch")
 <div class="row">
     <div class="col-xs-1 col-lg-4"></div>
 
     <div id="songs-items" class="col-xs-10 col-lg-4">
 
-        <h1 style="margin-top: 0;margin-bottom: 25px; color: #3764a2;text-shadow: 1px 1px 1px rgba(150, 150, 150, 1);">@ViewBag.AlbumName</h1>
+        <h1 style="margin-top: 0;margin-bottom: 25px; color: #3764a2;text-shadow: 1px 1px 1px rgba(150, 150, 150, 1);">@Model.AlbumArtistName</h1>
         @if (Model.Albums != null)
         {
             foreach (var item in Model.Albums)
@@ -30,10 +30,31 @@
 
                     </div>
                     <div class="song-date col-xs-8 col-lg-9">
-
+                       
                         <div class="song-date-artist col-xs-12 col-lg-12" style="height: 100%; width: 100%;margin-top: 0.8em; color: #a9a9a9;text-shadow: 1px 1px 1px rgba(150, 150, 150, 1);">@item.AlbumName.ToUpper()</div>
 
                     </div>
+                    @Ajax.ActionLink(">", "Player", "Player",
+                        new { partialname = "_Artists" },
+                        new AjaxOptions
+                        {
+                            HttpMethod = "Post",
+                            UpdateTargetId = "update",
+                            LoadingElementId = "loading",
+                            OnBegin = "HideResults",
+                            OnComplete = "ShowResults",
+                            OnFailure = "ShowError"
+
+                        },
+                        new { @class = "btn btn-primary btn-sm btn-undo display-none" })
+                   
+                    @*@if (Model.AlbumSongs.albumSongs != null)
+                    {
+                        @Ajax.ActionLink("<", "Player", "Player",
+                            new { partialname = "_AlbumSongs" },
+                            new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "songs-reload",OnComplete = "ShowX",OnBegin = "ShowX" },
+                            new { @class = "btn btn-primary btn-sm btn-next display-none" })
+                    }*@
 
                 </div>
 

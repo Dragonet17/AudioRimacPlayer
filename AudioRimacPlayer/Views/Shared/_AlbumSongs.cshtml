@@ -1,10 +1,11 @@
 ﻿@model AudioRimacPlayer.ViewModel.PlayerViewModel
+@Html.Partial("_FormToSearch")
 <div class="row">
     <div class="col-xs-1 col-lg-4"> </div>
     <div id="songs-items" class="col-xs-10 col-lg-4">
 
-        <h1 style="margin-top: 0; margin-bottom: 25px; color: #3764a2;text-shadow: 1px 1px 1px rgba(150, 150, 150, 1);">@Model.ArtistName</h1>
-        <h2 style="margin-top: 0;margin-bottom: 50px; color: #7597c7;text-shadow: 1px 1px 1px rgba(150, 150, 150, 1);">@Model.AlbumName</h2>
+        <h1 style="margin-top: 0; margin-bottom: 25px; color: #3764a2;text-shadow: 1px 1px 1px rgba(150, 150, 150, 1);">@Model.AlbumSongs.ArtistName</h1>
+        <h2 style="margin-top: 0;margin-bottom: 50px; color: #7597c7;text-shadow: 1px 1px 1px rgba(150, 150, 150, 1);">@Model.AlbumSongs.AlbumName</h2>
         @if (Model.AlbumSongs != null)
         {
             foreach (var item in Model.AlbumSongs.albumSongs)
@@ -12,7 +13,7 @@
 
                 <div class="song col-xs-12 col-lg-12">
                     @Ajax.ActionLink(" ", "Player", "Player",
-                            new { partialname = "PlaySongs", id = item.Key },
+                            new { partialname = "_MusicAlbumsSongs", id = item.Key },
                             new AjaxOptions
                             {
                                 HttpMethod = "Post",
@@ -33,7 +34,20 @@
                         <div class="song-date-artist col-xs-12 col-lg-12" style="height: 100%; width: 100%;margin-top: 0.8em; color: #a9a9a9;text-shadow: 1px 1px 1px rgba(150, 150, 150, 1);">@item.Value.ToUpper()</div>
 
                     </div>
+                    @Ajax.ActionLink(">", "Player", "Player",
+                        new { partialname = "_Albums" },
+                        new AjaxOptions
+                        {
+                            HttpMethod = "Post",
+                            UpdateTargetId = "update",
+                            LoadingElementId = "loading",
+                            OnBegin = "HideResults",
+                            OnComplete = "ShowResults",
+                            OnFailure = "ShowError"
 
+                        },
+                        new { @class = "btn btn-primary btn-sm btn-undo display-none" })
+                   
                 </div>
 
             }

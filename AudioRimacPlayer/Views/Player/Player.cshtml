@@ -6,21 +6,22 @@
     Layout = "~/Views/Shared/_PlayerLayout.cshtml";
 }
 <div id="buttons-searching">
+    
     @Html.Partial("_ButtonToSwitch")
 
 </div>
 
-
 <div id="update">
-    
-    
+
     @Html.Action("RenderParialView")
+
 </div>
 @Html.Partial("_Loading")
 
 @section scripts
 {
     <script>
+        $("input").focus();
         function HideResults() {
 
             $(".song").hide("blind", 600);
@@ -45,6 +46,8 @@
                         .css({ "font-size": "21px", "color": "#1073fc" });
                     $(this).children(".song-image").find("img")
                         .css({ "margin-left": "3px", "margin-bottom": "3px", "margin-top": "0px" });
+                    $(this).children(".btn-undo").toggleClass('display-none');
+                    $(this).children(".btn-next").toggleClass('display-none');
 
                 },
                 function () {
@@ -54,6 +57,9 @@
                         .css({ "font-size": "20px", "color": "#4694ff" });
                     $(this).children(".song-image").find("img")
                         .css({ "margin-left": "0px", "margin-bottom": "0px", "margin-top": "3px" });
+                    $(this).children(".btn-undo").toggleClass('display-none');
+                    $(this).children(".btn-next").toggleClass('display-none');
+
 
 
                 }

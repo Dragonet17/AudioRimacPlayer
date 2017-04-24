@@ -13,41 +13,46 @@ namespace AudioRimacPlayer.Controllers
         // GET: Player
         public ActionResult Index()
         {
-        
+
             return View();
         }
 
+        [NonAction]
         public ActionResult Error()
         {
             return View();
         }
-        PlayerViewModel vm = new PlayerViewModel();
+
+
         public async Task<ActionResult> Player(string partialname, string search, int? id, string form)
         {
+            PlayerViewModel playerViewModel = new PlayerViewModel();
+
             if (Session["player"] != null)
             {
-             vm = (PlayerViewModel)Session["player"];
+                playerViewModel = (PlayerViewModel)Session["player"];
 
             }
-            vm.FormPartialName = PlayerViewModel.SetFormPartialName(form);
 
             try
             {
                 if (Request.IsAjaxRequest())
                 {
-
-                    vm.PartialName = partialname;
-                    
+                    playerViewModel.SetPartialName(partialname);
+                    playerViewModel.SetFormPartialName(form, partialname);
 
                     switch (partialname)
                     {
+
                         case "_Songs":
                             {
-                                if (search !=null)
+                                if (search != null)
                                 {
-                                vm.Songs = await Models.Song.GetSongsListAsync(search);
+                                    playerViewModel.Songs = await Models.Song.GetSongsListAsync(search);
+
                                 }
-                                
+                               
+
                                 break;
                             }
 
@@ -55,65 +60,107 @@ namespace AudioRimacPlayer.Controllers
                             {
                                 if (search != null)
                                 {
-                                    vm.Artists = await Models.Artist.GetArtistAsync(search);
+                                    playerViewModel.Artists = await Models.Artist.GetArtistAsync(search);
+
                                 }
-                                
+                               
+
                                 break;
                             }
 
                         case "_Albums":
                             {
-                                var artist = vm.Artists.ToList().Find(item => item.ArtistId == id);
-                                vm.Albums = await Models.Album.GetArtistAlbums(artist);
+                                if (id != null)
+                                {
+                                    var artist = playerViewModel.Artists.ToList().Find(item => item.ArtistId == id);
+                                    playerViewModel.AlbumArtistName = artist.ArtistName;
+                                    playerViewModel.Albums = await Models.Album.GetArtistAlbums(artist);
+                                }
+                              
                                 break;
                             }
 
                         case "_AlbumSongs":
                             {
-                                var album = vm.Albums.ToList().Find(item => item.AlbumId == id);
-                                vm.AlbumSongs = await Models.Song.GetAlbumSongs(album);
-
+                                if (id != null)
+                                {
+                                    var album = playerViewModel.Albums.ToList().Find(item => item.AlbumId == id);
+                                    playerViewModel.AlbumSongs = await Models.Song.GetAlbumSongs(album);
+                                }
+                               
                                 break;
                             }
 
+                        case "_MusicSongs":
+                            {
+                                if (id != null)
+                                {
+                                    var song = playerViewModel.Songs.ToList().Find(item => item.AlbumId == id);
+
+                                    playerViewModel.MusicSong =
+                                        await Models.Song.GetYouTubeVideoUrlForSong(song);
+                                    
+                                }
+                                break;
+                            }
+
+                        case "_MusicAlbumsSongs":
+                            {
+                                if (id == null && playerViewModel.AlbumSongs != null)
+                                {
+
+                                    playerViewModel.MusicSong =
+                                        await Models.Song.GetYoutubeVideoUrlForAlbumSong(playerViewModel.AlbumSongs, (int)(id));
+
+                                }
+                              
+
+                                break;
+                            }
                         default:
                             {
                                 return PartialView("Error");
                             }
                     }
-                    Session["player"] = vm;
+                    Session["player"] = playerViewModel;
                     return RedirectToAction("RenderParialView");
                 }
-                Session["player"] = vm;
-                return View(vm);
+                Session["player"] = playerViewModel;
+                return View(playerViewModel);
             }
             catch (Exception)
             {
-                return RedirectToAction("Error");
+                if (Request.IsAjaxRequest())
+                {
+                    return PartialView("_Error");
+                }
+                else
+                {
+                    return RedirectToAction("Error");
+
+                }
             }
         }
 
+
         public ActionResult ChangeForm()
         {
-        
+
 
             return PartialView("_FormToSearch");
         }
 
+
+
         public ActionResult RenderParialView()
         {
-            var vm = (PlayerViewModel)Session["player"];
+            PlayerViewModel playerViewModel = new PlayerViewModel();
+
+            playerViewModel = (PlayerViewModel)Session["player"];
 
             try
             {
-
-                if (vm.PartialName == null)
-                {
-                    vm.PartialName = "_Empty";
-                }
-
-
-                return PartialView(vm.PartialName, vm);
+                return PartialView(playerViewModel.PartialName, playerViewModel);
             }
             catch (Exception)
             {

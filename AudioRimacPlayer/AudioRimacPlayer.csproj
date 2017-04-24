@@ -428,6 +428,7 @@
     <Content Include="Views\Shared\_ButtonToSwitch.cshtml" />
     <Content Include="Views\Shared\_Albums.cshtml" />
     <Content Include="Views\Shared\_AlbumSongs.cshtml" />
+    <Content Include="Views\Shared\_Music.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

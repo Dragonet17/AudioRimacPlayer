@@ -62,7 +62,7 @@ div {
 
 
 .song .song-date .song-date-artist {
-    color: #4694ff;
+    color: #4694ff!important;
     font-size: 20px;
     padding-top: 5px;
     overflow: hidden
@@ -257,3 +257,28 @@ footer {
     height: 100%;
     z-index: 1;
 }
+.btn-undo {
+    position: absolute;
+    right: 5px;
+    bottom: 10px;
+    width: 25px;
+    height: 25px;
+    padding: 0;
+    font-weight: 700;
+    font-size: 19px;
+    background-color: #8391b7;
+    z-index: 3;
+}
+
+/*.btn-next {
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+    width: 25px;
+    height: 25px;
+    padding: 0;
+    font-weight: 700;
+    font-size: 19px;
+    background-color: #8391b7;
+    z-index: 3;
+}*/
