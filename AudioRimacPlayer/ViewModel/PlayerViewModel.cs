@@ -24,6 +24,7 @@ namespace AudioRimacPlayer.ViewModel
         {
             this.FormPartialName = "_Songs";
             this.PartialName = "_Empty";
+          
         }
 
         public void SetPartialName(string partialname)

@@ -95,7 +95,7 @@ namespace AudioRimacPlayer.Controllers
                             {
                                 if (id != null)
                                 {
-                                    var song = playerViewModel.Songs.ToList().Find(item => item.AlbumId == id);
+                                    var song = playerViewModel.Songs.ToList().Find(item => item.SongId == id);
 
                                     playerViewModel.MusicSong =
                                         await Models.Song.GetYouTubeVideoUrlForSong(song);
@@ -178,6 +178,12 @@ namespace AudioRimacPlayer.Controllers
 
         public ActionResult TopList()
         {
+            return View();
+        }
+
+        public ActionResult Test()
+        {
+            
             return View();
         }
     }

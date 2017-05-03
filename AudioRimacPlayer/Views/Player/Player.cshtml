@@ -4,9 +4,13 @@
 @{
     ViewBag.Title = "Player";
     Layout = "~/Views/Shared/_PlayerLayout.cshtml";
+    if (Model.MusicSong != null)
+    {
+        ViewBag.YouTubeUrl = Model.MusicSong.YouTubeUrl;
+    }
 }
 <div id="buttons-searching">
-    
+
     @Html.Partial("_ButtonToSwitch")
 
 </div>
@@ -20,8 +24,12 @@
 
 @section scripts
 {
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jquer-ui")
+    @Scripts.Render("~/bundles/jquerunobtrajax")
     <script>
         $("input").focus();
+
         function HideResults() {
 
             $(".song").hide("blind", 600);
@@ -38,7 +46,7 @@
             $("#error").slideUp(1);
             $("#error").slideDown(1200);
             $(".song").hover(
-                function () {
+                function() {
 
                     $(this).css({ "background-color": "#5d5c5c", "border-bottom": "2px solid white" });
                     $(this).children(".song-date").find(".song-date-title").css({ "font-size": "20px" });
@@ -50,7 +58,7 @@
                     $(this).children(".btn-next").toggleClass('display-none');
 
                 },
-                function () {
+                function() {
                     $(this).css({ "background-color": "#323131", "border-bottom": "2px solid #979797" });
                     $(this).children(".song-date").find(".song-date-title").css({ "font-size": "19px" });
                     $(this).children(".song-date").find(".song-date-artist")
@@ -61,29 +69,364 @@
                     $(this).children(".btn-next").toggleClass('display-none');
 
 
-
                 }
             );
         }
+
         function ShowError() {
             $(".row").slideUp(1);
             $(".row").slideDown(1200);
 
         }
 
-        $("#button-song").click(function () {
+        $("#button-song").click(function() {
             if ($("#button-song").hasClass("searching-button")) {
                 $('#button-song,#button-artist').toggleClass('searching-button searching-button-click');
 
             }
         });
 
-        $("#button-artist").click(function () {
+        $("#button-artist").click(function() {
             if ($("#button-artist").hasClass("searching-button")) {
                 $('#button-artist,#button-song').toggleClass('searching-button searching-button-click');
 
             }
         });
-    </script>
 
+        function LoadPlayer() {
+            $(document).ready(function() {
+                var ajaxLb = "http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js";
+
+                $.getScript(ajaxLb)
+                    .done(function(script, textStatus) {
+                        console.log(textStatus);
+                        console.log("Ajax library was loaded");
+
+                    })
+                    .fail(function(jqxhr, settings, exception) {
+                        alert("The ajax library wasn't loaded");
+                    });
+                var ajaxHighlight = "http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.6/highlight.min.js";
+
+                $.getScript(ajaxHighlight)
+                    .done(function(script, textStatus) {
+                        console.log(textStatus);
+                        console.log("Ajax Highlight library was loaded");
+
+                    })
+                    .fail(function(jqxhr, settings, exception) {
+                        alert("The ajax library wasn't loaded");
+                    });
+
+                var youTube = "https://www.youtube.com/iframe_api";
+
+                $.getScript(youTube)
+                    .done(function(script, textStatus) {
+                        console.log(textStatus);
+                        console.log("YouTube library was loaded");
+
+                    })
+                    .fail(function(jqxhr, settings, exception) {
+                        alert("YouTube  library wasn't loaded");
+                    });
+
+                var jqUI = "http://localhost:6464/Scripts/jquery-ui-1.12.1.js";
+
+                $.getScript(jqUI)
+                    .done(function(script, textStatus) {
+                        console.log(textStatus);
+                        console.log("JQ UI library was loaded");
+
+                    })
+                    .fail(function(jqxhr, settings, exception) {
+                        alert("JQ UI library wasn't loaded");
+                    });
+
+                var player,
+                    time_update_interval = 0;
+
+
+                function onYouTubeIframeAPIReady() {
+                    console.log("Youtube Video was launched");
+                    player = new YT.Player('video-placeholder',
+                        {
+                            width: 300,
+                            height: 150,
+                            videoId: 'e2vBLd5Egnk',
+                            playerVars: {
+                                autoplay: 1,
+                                color: 'white'
+
+                            },
+                            events: {
+                                onReady: initialize
+                            }
+                        });
+                }
+
+                function initialize() {
+
+                    // Update the controls on load
+                    updateTimerDisplay();
+                    updateProgressBar();
+
+                    // Clear any old interval.
+                    clearInterval(time_update_interval);
+
+                    // Start interval to update elapsed time display and
+                    // the elapsed part of the progress bar every second.
+                    time_update_interval = setInterval(function() {
+                            updateTimerDisplay();
+                            updateProgressBar();
+                        },
+                        1000);
+
+                    player.setVolume(100);
+                    $('.volume-input').val(Math.round(player.getVolume()));
+                }
+
+
+                // This function is called by initialize()
+                function updateTimerDisplay() {
+                    // Update current time text display.
+                    $('#current-time').text(formatTime(player.getCurrentTime()));
+                    $('#duration').text(formatTime(player.getDuration()));
+                }
+
+
+                // This function is called by initialize()
+                function updateProgressBar() {
+                    // Update the value of our progress bar accordingly.
+                    $('#progress-bar').val((player.getCurrentTime() / player.getDuration()) * 100);
+                }
+
+
+                // Progress bar
+
+                $('#progress-bar').on('mouseup touchend',
+                    function(e) {
+
+                        // Calculate the new time for the video.
+                        // new time in seconds = total duration in seconds * ( value of range input / 100 )
+                        var newTime = player.getDuration() * (e.target.value / 100);
+
+                        // Skip video to new time.
+                        player.seekTo(newTime);
+
+                    });
+
+
+                // Playback
+
+                $('#play-button').on('click',
+                    function() {
+                        player.playVideo();
+                    });
+
+
+                $('#pause-button').on('click',
+                    function() {
+                        player.pauseVideo();
+                    });
+
+
+                // Sound volume
+
+
+                $('#mute-toggle').on('click',
+                    function() {
+                        var mute_toggle = $(this);
+
+                        if (player.isMuted()) {
+                            player.unMute();
+                            mute_toggle.text('volume_up');
+                        } else {
+                            player.mute();
+                            mute_toggle.text('volume_off');
+                        }
+                    });
+
+                $('.volume-input').on('change',
+                    function() {
+                        player.setVolume($(this).val());
+                    });
+
+
+                // Other options
+
+
+                $('#speed').on('change',
+                    function() {
+                        player.setPlaybackRate($(this).val());
+                    });
+
+                $('#quality').on('change',
+                    function() {
+                        player.setPlaybackQuality($(this).val());
+                    });
+
+
+                //// Playlist
+
+
+                // Helper Functions
+
+                function formatTime(time) {
+                    time = Math.round(time);
+
+                    var minutes = Math.floor(time / 60),
+                        seconds = time - minutes * 60;
+
+                    seconds = seconds < 10 ? '0' + seconds : seconds;
+
+                    return minutes + ":" + seconds;
+                }
+
+
+                $('pre code').each(function(i, block) {
+                    hljs.highlightBlock(block);
+                });
+
+
+                $(function() {
+                    $("#slider-vertical").slider({
+                        orientation: "vertical",
+                        range: "min",
+                        min: 0,
+                        max: 100,
+                        value: 100,
+                        slide: function(event, ui) {
+                            $("#volume-value").show().delay(1000).fadeOut();
+                            $("#amount").val(ui.value);
+                            $("#volume-value").text(ui.value);
+                            player.setVolume(ui.value);
+                        }
+                    });
+                    $("#amount").val($("#slider-vertical").slider("value"));
+                    $("#volume-value").text($("#slider-vertical").slider("value"));
+                });
+
+
+                var tutorialzine = "http://cdn.tutorialzine.com/misc/enhance/v3.js";
+
+                $.getScript(tutorialzine)
+                    .done(function(script, textStatus) {
+                        console.log(textStatus);
+                        console.log("Tutorialzine library was loaded");
+
+                    })
+                    .fail(function(jqxhr, settings, exception) {
+                        alert("Tutorialzine library wasn't loaded");
+                    });
+
+
+                $("html, body").delay(2000).animate({ scrollTop: '50px' }, 2000);
+                //$("body").animate({ backgroundColor: '#2B353E' }, 3000);
+                $("h2").css({ "color": "#1073fc" });
+                $("img:first").fadeTo(5000, 1);
+                $("img:first").css({ borderColor: "black", borderStyle: "solid" })
+                    .animate({ borderWidth: '5px' }, 1000, 'linear');
+                $(".player-buttons").animate({ backgroundColor: '#717070' }, 6000);
+                $("#play-button,#pause-button").hover(
+                    function() {
+                        $(".player-buttons").animate({ backgroundColor: 'white' }, 500);
+
+                    },
+                    function() {
+                        $(".player-buttons").animate({ backgroundColor: '#717070' }, 500);
+
+                    }
+                );
+
+                $("#pause-button").click(function() {
+                    $(this).toggleClass("display-none");
+                    $("#play-button").toggleClass("display-none");
+                });
+                $("#play-button").click(function() {
+                    $(this).toggleClass("display-none");
+                    $("#pause-button").toggleClass("display-none");
+                });
+                $("#youtube-btn-black").click(function() {
+                    $(this).toggleClass("display-none");
+                    $("#youtube-btn-red").toggleClass("display-none");
+                    $("#yt-video-and-covert-img").animate({ width: '6px' }, 1000);
+                    setTimeout(function() {
+                            $("#yt-video-and-covert-img").animate({ height: '150px' }, 1000);
+                        },
+                        1000);
+                    setTimeout(function() {
+                            $("#yt-video-and-covert-img").animate({ width: '300px' }, 1000);
+                            $("#covert-img").toggleClass("display-none");
+                            $("#video-placeholder").toggleClass("display-none");
+
+                        },
+                        2000);
+                    setTimeout(function() {
+                            $("#yt-video-and-covert-img").css({
+                                "width": "302px",
+                                "height": "152px",
+                                "border": "1px solid #575353"
+                            });
+
+                        },
+                        3000);
+                    //$("#player-background").stop().animate({
+                    //    'background-position-x': '0px',
+                    //    'background-position-y': '350px'
+                    //}, 2500, 'linear');
+                });
+                $("#youtube-btn-red").click(function() {
+                    $(this).toggleClass("display-none");
+                    $("#youtube-btn-black").toggleClass("display-none");
+                    $("#yt-video-and-covert-img").animate({ width: '6px' }, 1000);
+                    setTimeout(function() {
+                            $("#yt-video-and-covert-img").animate({ height: '303px' }, 1000);
+                            $("#covert-img").toggleClass("display-none");
+                            $("#video-placeholder").toggleClass("display-none");
+                        },
+                        1000);
+                    setTimeout(function() {
+                            $("#yt-video-and-covert-img").animate({ width: '303px' }, 1000);
+                        },
+                        2000);
+                    setTimeout(function() {
+                            $("#yt-video-and-covert-img").css({
+                                "width": "303px",
+                                "height": "303px",
+                                "border": "1px solid #575353"
+                            });
+
+                        },
+                        3000);
+                    //$("#player-background").stop().animate({
+                    //    'background-position-x': '0px',
+                    //    'background-position-y': '250px'
+                    //}, 2500, 'linear');
+                });
+
+                $('head').append($('<link rel="stylesheet" type="text/css" />')
+                    .attr('href', 'http://localhost:6464/Content/rimac-player/AudioProgressBar.css'));
+                $('head').append($('<link rel="stylesheet" type="text/css" />')
+                    .attr('href', 'http://localhost:6464/Content/themes/base/jquery-ui.css'));
+                $('head').append($('<link rel="stylesheet" type="text/css" />')
+                    .attr('href', 'http://localhost:6464/Content/rimac-player/playerstyles.css'));
+
+            });
+        }
+
+    </script>
 }
+
+
+@section musicscripts{
+    @if (@Model.MusicSong!=null)
+    {
+  
+    <script>
+        LoadPlayer();
+      
+    </script>
+}
+}
+
+    

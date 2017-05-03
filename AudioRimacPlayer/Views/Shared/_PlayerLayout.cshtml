@@ -8,10 +8,12 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="assets/css/bootstrap-responsive.css" rel="stylesheet">
     <link href="~/Content/font-awesome.css" rel="stylesheet" />
     <link href="~/Content/rimac-player/RimacStyles.css?v=<?=time();?" rel="stylesheet" type="text/css" />
     @RenderSection("styles", required: false)
+    @RenderSection("playerstyles", required: false)
+
+
     <style>
         .bsap {
             display: none !important;
@@ -40,7 +42,7 @@
             </div>
         </div>
     </div>
-    <div class="container body-content">
+    <div id="container" class="container body-content">
         @RenderBody()
 
 
@@ -56,9 +58,10 @@
 @Scripts.Render("~/bundles/jquery")
 @Scripts.Render("~/bundles/jquer-ui")
 @Scripts.Render("~/bundles/jquerunobtrajax")
-@Scripts.Render("~/bundles/bootstrap")
 
 @RenderSection("scripts", required: false)
+@RenderSection("musicscripts", required: false)
+@Scripts.Render("~/bundles/bootstrap")
 
 
 </html>

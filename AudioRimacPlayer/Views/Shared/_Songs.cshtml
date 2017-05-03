@@ -18,11 +18,10 @@
                                  new AjaxOptions
                                  {
                                      HttpMethod = "Post",
-                                     UpdateTargetId = "update",
+                                     UpdateTargetId = "container",
                                      LoadingElementId = "loading",
-                                     OnBegin = "HideResults",
-                                     OnComplete = "ShowResults",
-                                     OnFailure = "ShowError"
+                                     OnComplete = "LoadPlayer"
+
 
                                  },
                                  new { @class = "ajax-div" })
