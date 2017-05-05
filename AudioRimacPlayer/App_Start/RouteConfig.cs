@@ -31,7 +31,7 @@ namespace AudioRimacPlayer
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Rimac", action = "Index", id = UrlParameter.Optional }
+                defaults: new { controller = "Player", action = "Music", id = UrlParameter.Optional }
             );
         }
     }

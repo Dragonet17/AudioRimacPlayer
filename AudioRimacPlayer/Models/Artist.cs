@@ -83,8 +83,6 @@ namespace AudioRimacPlayer.Models
         }
 
 
-
-        //  Disabled
         public static List<Artist> GetArtist(string search)
         {
             Uri urladdress =

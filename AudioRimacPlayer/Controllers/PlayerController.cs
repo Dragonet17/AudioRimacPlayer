@@ -150,7 +150,132 @@ namespace AudioRimacPlayer.Controllers
             return PartialView("_FormToSearch");
         }
 
+        public async Task<ActionResult> Music(string partialname, string search, int? id, string form)
+        {
+            PlayerViewModel playerViewModel = new PlayerViewModel();
 
+            if (Session["player"] != null)
+            {
+                playerViewModel = (PlayerViewModel)Session["player"];
+
+            }
+
+            try
+            {
+                if (Request.IsAjaxRequest())
+                {
+                    playerViewModel.SetPartialName(partialname);
+                    playerViewModel.SetFormPartialName(form, partialname);
+
+                    switch (partialname)
+                    {
+
+                        case "_Songs":
+                        {
+                            if (search != null)
+                            {
+                                playerViewModel.Songs = await Models.Song.GetSongsListAsync(search);
+
+                            }
+
+
+                            break;
+                        }
+
+                        case "_Artists":
+                        {
+                            if (search != null)
+                            {
+                                playerViewModel.Artists = await Models.Artist.GetArtistAsync(search);
+
+                            }
+
+
+                            break;
+                        }
+
+                        case "_Albums":
+                        {
+                            if (id != null)
+                            {
+                                var artist = playerViewModel.Artists.ToList().Find(item => item.ArtistId == id);
+                                playerViewModel.AlbumArtistName = artist.ArtistName;
+                                playerViewModel.Albums = await Models.Album.GetArtistAlbums(artist);
+                            }
+
+                            break;
+                        }
+
+                        case "_AlbumSongs":
+                        {
+                            if (id != null)
+                            {
+                                var album = playerViewModel.Albums.ToList().Find(item => item.AlbumId == id);
+                                playerViewModel.AlbumSongs = await Models.Song.GetAlbumSongs(album);
+                            }
+
+                            break;
+                        }
+
+                        case "_MusicSongs":
+                        {
+                            if (id != null)
+                            {
+                                var song = playerViewModel.Songs.ToList().Find(item => item.SongId == id);
+
+                                playerViewModel.MusicSong =
+                                    await Models.Song.GetYouTubeVideoUrlForSong(song);
+                                return RedirectToAction("MusicPlayer");
+
+                            }
+                            break;
+                        }
+
+                        case "_MusicAlbumsSongs":
+                        {
+                            if (id == null && playerViewModel.AlbumSongs != null)
+                            {
+
+                                playerViewModel.MusicSong =
+                                    await Models.Song.GetYoutubeVideoUrlForAlbumSong(playerViewModel.AlbumSongs, (int)(id));
+
+                                return RedirectToAction("MusicPlayer");
+
+
+                                }
+
+
+                                break;
+                        }
+                        default:
+                        {
+                            return PartialView("Error");
+                        }
+                    }
+                    Session["player"] = playerViewModel;
+                    return RedirectToAction("RenderParialView");
+                }
+                Session["player"] = playerViewModel;
+                return View(playerViewModel);
+            }
+            catch (Exception)
+            {
+                if (Request.IsAjaxRequest())
+                {
+                    return PartialView("_Error");
+                }
+                else
+                {
+                    return RedirectToAction("Error");
+
+                }
+            }
+        }
+
+        public ActionResult MusicPlayer()
+        {
+            return View();
+        }
 
         public ActionResult RenderParialView()
         {

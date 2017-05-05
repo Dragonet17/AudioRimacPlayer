@@ -12,7 +12,7 @@
             {
 
                 <div class="song col-xs-12 col-lg-12">
-                    @Ajax.ActionLink(" ", "Player", "Player",
+                    @Ajax.ActionLink(" ", "Music", "Player",
                             new { partialname = "_AlbumSongs", id = item.AlbumId },
                             new AjaxOptions
                             {
@@ -34,7 +34,7 @@
                         <div class="song-date-artist col-xs-12 col-lg-12" style="height: 100%; width: 100%;margin-top: 0.8em; color: #a9a9a9;text-shadow: 1px 1px 1px rgba(150, 150, 150, 1);">@item.AlbumName.ToUpper()</div>
 
                     </div>
-                    @Ajax.ActionLink(">", "Player", "Player",
+                    @Ajax.ActionLink(">", "Music", "Player",
                         new { partialname = "_Artists" },
                         new AjaxOptions
                         {
@@ -46,15 +46,9 @@
                             OnFailure = "ShowError"
 
                         },
-                        new { @class = "btn btn-primary btn-sm btn-undo display-none" })
+                        new { @class = "btn btn-primary btn-sm btn-undo" })
                    
-                    @*@if (Model.AlbumSongs.albumSongs != null)
-                    {
-                        @Ajax.ActionLink("<", "Player", "Player",
-                            new { partialname = "_AlbumSongs" },
-                            new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "songs-reload",OnComplete = "ShowX",OnBegin = "ShowX" },
-                            new { @class = "btn btn-primary btn-sm btn-next display-none" })
-                    }*@
+                
 
                 </div>
 

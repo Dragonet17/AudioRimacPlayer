@@ -346,8 +346,12 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\player\GetJSScripts.js" />
+    <Content Include="Scripts\player\AppendStylesJS.js" />
     <Content Include="Scripts\player\player-animations.js" />
     <Content Include="Scripts\player\player-functions.js" />
+    <Content Include="Scripts\player\PlayerAjaxFunctions.js" />
+    <Content Include="Scripts\player\SongsHover.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
@@ -416,6 +420,8 @@
     <Content Include="Views\Shared\_AlbumSongs.cshtml" />
     <Content Include="Views\Shared\_Music.cshtml" />
     <Content Include="Views\Player\Test.cshtml" />
+    <Content Include="Views\Player\Music.cshtml" />
+    <Content Include="Views\Player\MusicPlayer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

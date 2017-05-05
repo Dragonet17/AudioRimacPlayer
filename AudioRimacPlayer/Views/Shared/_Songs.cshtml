@@ -7,41 +7,41 @@
 
         <div id="songs-items" class="col-xs-10 col-lg-4">
 
-            @if (Model.Songs!=null)
-            {
-                foreach (var item in Model.Songs)
-                 {
-                    
-                         <div class="song col-xs-12 col-lg-12">
-                             @Ajax.ActionLink(" ", "Player", "Player",
-                                 new { partialname = "_MusicSongs", id =item.SongId },
-                                 new AjaxOptions
-                                 {
-                                     HttpMethod = "Post",
-                                     UpdateTargetId = "container",
-                                     LoadingElementId = "loading",
-                                     OnComplete = "LoadPlayer"
+                        @if (Model.Songs != null)
+                        {
+                            foreach (var item in Model.Songs)
+                            {
+                                <a href="@Url.Action("MusicPlayer","Player", new {id = item.SongId})">
+                                    <div class="song col-xs-12 col-lg-12">
+                                        @*@Ajax.ActionLink(" ", "Music", "Player",
+                                    new { partialname = "_MusicSongs", id =item.SongId },
+                                    new AjaxOptions
+                                    {
+                                        HttpMethod = "Post",
+                                        UpdateTargetId = "container",
+                                        LoadingElementId = "loading",
+                                        OnComplete = "LoadPlayer"
 
 
-                                 },
-                                 new { @class = "ajax-div" })
-                             <div class="song-image col-xs-4 col-lg-3">
-                                 <img src="@item.ArtistImagetUrl" alt="Loading"/>
+                                    },
+                                    new { @class = "ajax-div" })*@
+                                        <div class="song-image col-xs-4 col-lg-3">
+                                            <img src="@item.ArtistImagetUrl" alt="Loading" />
 
-                             </div>
-                             <div class="song-date col-xs-8 col-lg-9">
-                                 <div class="song-date-title col-xs-12 col-lg-12">@item.SongName </div>
-                                 <div class="song-date-artist col-xs-12 col-lg-12">@item.ArtistName.ToUpper()</div>
+                                        </div>
+                                        <div class="song-date col-xs-8 col-lg-9">
+                                            <div class="song-date-title col-xs-12 col-lg-12">@item.SongName </div>
+                                            <div class="song-date-artist col-xs-12 col-lg-12">@item.ArtistName.ToUpper()</div>
 
-                             </div>
+                                        </div>
 
-                         </div>
-                    
-                 }
-            }
+                                    </div>
+                                    </a>
+                                    }
+                                    }
 
-      
-        </div>
+
+</div>
     <div class="col-xs-1 col-lg-4"></div>
     
 

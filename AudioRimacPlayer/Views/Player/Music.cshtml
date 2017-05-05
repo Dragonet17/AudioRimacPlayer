@@ -1,0 +1,39 @@
+﻿@model AudioRimacPlayer.ViewModel.PlayerViewModel
+
+@using AudioRimacPlayer.ViewModel
+@{
+    ViewBag.Title = "Player";
+    Layout = "~/Views/Shared/_PlayerLayout.cshtml";
+    if (Model.MusicSong != null)
+    {
+        ViewBag.YouTubeUrl = Model.MusicSong.YouTubeUrl;
+    }
+}
+<div id="buttons-searching">
+
+    @Html.Partial("_ButtonToSwitch")
+
+</div>
+
+<div id="update">
+
+    @Html.Action("RenderParialView")
+
+</div>
+
+@Html.Partial("_Loading")
+
+@section scripts
+{
+    <script src="~/Scripts/player/PlayerAjaxFunctions.js" async></script>
+    <script src="~/Scripts/player/SongsHover.js"></script>
+
+
+}
+
+
+@section musicscripts{
+
+}
+
+

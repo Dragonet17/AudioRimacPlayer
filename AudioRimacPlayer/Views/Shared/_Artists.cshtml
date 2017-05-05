@@ -10,7 +10,7 @@
             foreach (var item in Model.Artists)
             {
                 <div class="song col-xs-12 col-lg-12">
-                    @Ajax.ActionLink(" ", "Player", "Player",
+                    @Ajax.ActionLink(" ", "Music", "Player",
                         new { partialname = "_Albums", id = item.ArtistId },
                         new AjaxOptions
                         {
