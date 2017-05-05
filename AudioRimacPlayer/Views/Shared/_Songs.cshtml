@@ -11,7 +11,7 @@
                         {
                             foreach (var item in Model.Songs)
                             {
-                                <a href="@Url.Action("MusicPlayer","Player", new {id = item.SongId})">
+                                <a href="@Url.Action("MusicSong", "Player", new { partialname = "_MusicSongs", id = item.SongId})">
                                     <div class="song col-xs-12 col-lg-12">
                                         @*@Ajax.ActionLink(" ", "Music", "Player",
                                     new { partialname = "_MusicSongs", id =item.SongId },

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using AudioRimacPlayer.Models;
 
 namespace AudioRimacPlayer.Controllers
 {
@@ -13,11 +14,10 @@ namespace AudioRimacPlayer.Controllers
         // GET: Player
         public ActionResult Index()
         {
-
             return View();
         }
 
-        [NonAction]
+        
         public ActionResult Error()
         {
             return View();
@@ -31,7 +31,6 @@ namespace AudioRimacPlayer.Controllers
             if (Session["player"] != null)
             {
                 playerViewModel = (PlayerViewModel)Session["player"];
-
             }
 
             try
@@ -43,15 +42,13 @@ namespace AudioRimacPlayer.Controllers
 
                     switch (partialname)
                     {
-
                         case "_Songs":
                             {
                                 if (search != null)
                                 {
                                     playerViewModel.Songs = await Models.Song.GetSongsListAsync(search);
-
                                 }
-                               
+
 
                                 break;
                             }
@@ -61,9 +58,8 @@ namespace AudioRimacPlayer.Controllers
                                 if (search != null)
                                 {
                                     playerViewModel.Artists = await Models.Artist.GetArtistAsync(search);
-
                                 }
-                               
+
 
                                 break;
                             }
@@ -76,7 +72,7 @@ namespace AudioRimacPlayer.Controllers
                                     playerViewModel.AlbumArtistName = artist.ArtistName;
                                     playerViewModel.Albums = await Models.Album.GetArtistAlbums(artist);
                                 }
-                              
+
                                 break;
                             }
 
@@ -87,7 +83,7 @@ namespace AudioRimacPlayer.Controllers
                                     var album = playerViewModel.Albums.ToList().Find(item => item.AlbumId == id);
                                     playerViewModel.AlbumSongs = await Models.Song.GetAlbumSongs(album);
                                 }
-                               
+
                                 break;
                             }
 
@@ -99,7 +95,6 @@ namespace AudioRimacPlayer.Controllers
 
                                     playerViewModel.MusicSong =
                                         await Models.Song.GetYouTubeVideoUrlForSong(song);
-                                    
                                 }
                                 break;
                             }
@@ -108,12 +103,11 @@ namespace AudioRimacPlayer.Controllers
                             {
                                 if (id == null && playerViewModel.AlbumSongs != null)
                                 {
-
                                     playerViewModel.MusicSong =
-                                        await Models.Song.GetYoutubeVideoUrlForAlbumSong(playerViewModel.AlbumSongs, (int)(id));
-
+                                        await Models.Song.GetYoutubeVideoUrlForAlbumSong(playerViewModel.AlbumSongs,
+                                            (int)(id));
                                 }
-                              
+
 
                                 break;
                             }
@@ -137,7 +131,6 @@ namespace AudioRimacPlayer.Controllers
                 else
                 {
                     return RedirectToAction("Error");
-
                 }
             }
         }
@@ -145,8 +138,6 @@ namespace AudioRimacPlayer.Controllers
 
         public ActionResult ChangeForm()
         {
-
-
             return PartialView("_FormToSearch");
         }
 
@@ -157,7 +148,6 @@ namespace AudioRimacPlayer.Controllers
             if (Session["player"] != null)
             {
                 playerViewModel = (PlayerViewModel)Session["player"];
-
             }
 
             try
@@ -169,88 +159,56 @@ namespace AudioRimacPlayer.Controllers
 
                     switch (partialname)
                     {
-
                         case "_Songs":
-                        {
-                            if (search != null)
                             {
-                                playerViewModel.Songs = await Models.Song.GetSongsListAsync(search);
-
-                            }
-
-
-                            break;
-                        }
-
-                        case "_Artists":
-                        {
-                            if (search != null)
-                            {
-                                playerViewModel.Artists = await Models.Artist.GetArtistAsync(search);
-
-                            }
-
-
-                            break;
-                        }
-
-                        case "_Albums":
-                        {
-                            if (id != null)
-                            {
-                                var artist = playerViewModel.Artists.ToList().Find(item => item.ArtistId == id);
-                                playerViewModel.AlbumArtistName = artist.ArtistName;
-                                playerViewModel.Albums = await Models.Album.GetArtistAlbums(artist);
-                            }
-
-                            break;
-                        }
-
-                        case "_AlbumSongs":
-                        {
-                            if (id != null)
-                            {
-                                var album = playerViewModel.Albums.ToList().Find(item => item.AlbumId == id);
-                                playerViewModel.AlbumSongs = await Models.Song.GetAlbumSongs(album);
-                            }
-
-                            break;
-                        }
-
-                        case "_MusicSongs":
-                        {
-                            if (id != null)
-                            {
-                                var song = playerViewModel.Songs.ToList().Find(item => item.SongId == id);
-
-                                playerViewModel.MusicSong =
-                                    await Models.Song.GetYouTubeVideoUrlForSong(song);
-                                return RedirectToAction("MusicPlayer");
-
-                            }
-                            break;
-                        }
-
-                        case "_MusicAlbumsSongs":
-                        {
-                            if (id == null && playerViewModel.AlbumSongs != null)
-                            {
-
-                                playerViewModel.MusicSong =
-                                    await Models.Song.GetYoutubeVideoUrlForAlbumSong(playerViewModel.AlbumSongs, (int)(id));
-
-                                return RedirectToAction("MusicPlayer");
-
-
+                                if (search != null)
+                                {
+                                    playerViewModel.Songs = await Models.Song.GetSongsListAsync(search);
                                 }
 
 
                                 break;
-                        }
+                            }
+
+                        case "_Artists":
+                            {
+                                if (search != null)
+                                {
+                                    playerViewModel.Artists = await Models.Artist.GetArtistAsync(search);
+                                }
+
+
+                                break;
+                            }
+
+                        case "_Albums":
+                            {
+                                if (id != null)
+                                {
+                                    var artist = playerViewModel.Artists.ToList().Find(item => item.ArtistId == id);
+                                    playerViewModel.AlbumArtistName = artist.ArtistName;
+                                    playerViewModel.Albums = await Models.Album.GetArtistAlbums(artist);
+                                }
+
+                                break;
+                            }
+
+                        case "_AlbumSongs":
+                            {
+                                if (id != null)
+                                {
+                                    var album = playerViewModel.Albums.ToList().Find(item => item.AlbumId == id);
+                                    playerViewModel.AlbumSongs = await Models.Song.GetAlbumSongs(album);
+                                }
+
+                                break;
+                            }
+
+
                         default:
-                        {
-                            return PartialView("Error");
-                        }
+                            {
+                                return PartialView("Error");
+                            }
                     }
                     Session["player"] = playerViewModel;
                     return RedirectToAction("RenderParialView");
@@ -267,14 +225,8 @@ namespace AudioRimacPlayer.Controllers
                 else
                 {
                     return RedirectToAction("Error");
-
                 }
             }
-        }
-
-        public ActionResult MusicPlayer()
-        {
-            return View();
         }
 
         public ActionResult RenderParialView()
@@ -291,9 +243,74 @@ namespace AudioRimacPlayer.Controllers
             {
                 return PartialView("_Error");
             }
+        }
 
+        public async Task<ActionResult> MusicSong(string partialname, int id)
+        {
+            var playerViewModel = new PlayerViewModel();
 
+            if (Session["player"] != null)
+            {
+                playerViewModel = (PlayerViewModel)Session["player"];
+            }
+            else
+            {
+                return RedirectToAction("Music");
+            }
+            switch (partialname)
+            {
+                case "_MusicSongs":
+                    {
+                        var song = playerViewModel.Songs.ToList().Find(item => item.SongId == id);
 
+                        playerViewModel.MusicSong =
+                        await Models.Song.GetYouTubeVideoUrlForSong(song);
+
+                        break;
+                    }
+
+                case "_MusicAlbumsSongs":
+                    {
+
+                        playerViewModel.MusicSong =
+                            await Models.Song.GetYoutubeVideoUrlForAlbumSong(playerViewModel.AlbumSongs,id);
+                        break;
+                    }
+                default:
+                {
+                    return RedirectToAction("Error","Player");
+                }
+            }
+            Session["player"] = playerViewModel;
+            return RedirectToAction("MusicPlayer");
+        }
+
+        public JsonResult GetMusicSong()
+        {
+
+            var playerViewModel = (PlayerViewModel)Session["player"];
+            if (Session["player"] != null)
+            {
+                playerViewModel = (PlayerViewModel)Session["player"];
+            }
+            else
+            {
+                return null;
+            }
+            JsonSong song = new JsonSong
+            {
+                SongName = playerViewModel.MusicSong.SongName,
+                ArtistName = playerViewModel.MusicSong.ArtistName,
+                ImgUrl = playerViewModel.MusicSong.ArtistImagetUrl,
+                YouTubeUrl = playerViewModel.MusicSong.YouTubeUrl
+            };
+            
+
+            return Json(song, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult MusicPlayer()
+        {
+            return View();
         }
 
         //Play Song
@@ -308,7 +325,6 @@ namespace AudioRimacPlayer.Controllers
 
         public ActionResult Test()
         {
-            
             return View();
         }
     }

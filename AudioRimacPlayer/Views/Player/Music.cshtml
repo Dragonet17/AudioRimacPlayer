@@ -4,10 +4,7 @@
 @{
     ViewBag.Title = "Player";
     Layout = "~/Views/Shared/_PlayerLayout.cshtml";
-    if (Model.MusicSong != null)
-    {
-        ViewBag.YouTubeUrl = Model.MusicSong.YouTubeUrl;
-    }
+   
 }
 <div id="buttons-searching">
 
@@ -26,7 +23,7 @@
 @section scripts
 {
     <script src="~/Scripts/player/PlayerAjaxFunctions.js" async></script>
-    <script src="~/Scripts/player/SongsHover.js"></script>
+    <script src="~/Scripts/player/SongsHover.js" async></script>
 
 
 }
