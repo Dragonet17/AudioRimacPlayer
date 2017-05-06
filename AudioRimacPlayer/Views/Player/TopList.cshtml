@@ -4,6 +4,23 @@
     Layout = "~/Views/Shared/_PlayerLayout.cshtml";
 }
 
-<h2>TopList</h2>
+<h2>TOP List</h2>
 
-<h3>Najlepsze piosenki</h3>
+<div class="row">
+    <div class="col-xs-1 col-lg-4"> </div>
+
+    <div id="songs-reload" class="col-xs-10 col-lg-4">
+        @Html.Partial("_TopList")
+    </div>
+    <div class="col-xs-1 col-lg-4"> </div>
+</div>
+
+
+@section scripts{
+  <script src="~/Scripts/player/TopListHover.js" async></script>
+<script src="~/Scripts/player/jquery.random-fade-in.min.js"></script>
+    <script>
+        $('.box-container').randomFadeIn(250, false);
+
+    </script>
+}

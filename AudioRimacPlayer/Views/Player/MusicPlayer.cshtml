@@ -42,14 +42,15 @@
                     <div style="position: absolute; left: 25px;top: 10px;">
                         <img id="youtube-btn-red" class="display-none" src="~/Content/rimac-player/img/yt-red.png" style="width: 25px; height: 25px; opacity: 1;" />
                         <img id="youtube-btn-black" src="~/Content/rimac-player/img/yt-black.png" style="width: 25px; height: 25px; opacity:1;" />
-                        @*@using (Html.BeginForm("AddToTopList", "Rimac", FormMethod.Post))
-                        {
-                            @Html.HiddenFor(m => m.MusicSong.SongName)
-                            @Html.HiddenFor(m => m.MusicSong.ArtistName)
-                            @Html.HiddenFor(m => m.MusicSong.ArtistImagetUrl)
-                            @Html.HiddenFor(m => m.MusicSong.YouTubeUrl)
-                            <button class="btn btn-success btn-sm btn-addToTopList" type="submit" style="">+</button>
-                        }*@
+                        <div id="addSong">
+                            @if (!ViewBag.CheckIfSongExistsInDb)
+                            { @Ajax.ActionLink("+", "AddSongTheTheTopList", "Player",
+
+                              new AjaxOptions { HttpMethod = "Post" },
+                              new { @class = "btn btn-primary btn-sm btn-addToTopList" })
+                                @*<button class="btn btn-success btn-sm btn-addToTopList" type="submit" style="">+</button>*@
+                            }
+                        </div>
                     </div>
                     <div class="player-buttons">
 
@@ -78,45 +79,67 @@
 
 @section scripts
 {
-    <script>
+    <script type="text/javascript">
         var SongName;
         var ArtistName;
         var ImgUrl;
         var YouTubeUrl;
-        
-        
+
+
         $.ajax({
             url: 'GetMusicSong/',
-            
+
             dataType: "text",
-            success: function(data) {
-           
+            success: function (data) {
+
                 var json = $.parseJSON(data);
                 SongName = json["SongName"];
                 ArtistName = json["ArtistName"];
                 ImgUrl = json["ImgUrl"];
                 YouTubeUrl = json["YouTubeUrl"];
                 $('#covert-img').attr('src', ImgUrl);
-                $('.artist-name').text(ArtistName.toString());
-                $('.song-name').text(ArtistName.toString());
+                $('.artist-name').text(ArtistName);
+                $('.song-name').text(SongName);
 
-                
-                
+
+
             }
         });
-            
-        //$('img').bind('mouseenter mouseleave', function () {
-        //    $(this).attr({
-        //        src: $(this).attr('data-other-src') 
-        //        , 'data-other-src': $(this).attr('src') 
-        //    })
-        //});
-        //$('#covert-img').append($('<link rel="stylesheet" type="text/css" />')
-        //    .attr('href', 'http://localhost:6464/Content/rimac-player/playerstyles.css'));
+        var getJsScripts = "http://localhost:6464/Scripts/player/GetJSScripts.js";
 
-        //$('#covert-img').attr('src', "ImgUrl");
+        $.getScript(getJsScripts)
+            .done(function (script, textStatus) {
+                console.log(textStatus);
+                console.log("My Scripts was added");
+
+            })
+            .fail(function (jqxhr, settings, exception) {
+                alert("My Scripts wasn't added");
+            });
+
+
+    </script>
+    <script>
+        $(document).ready(function () {
+
+           
+
+            $(".btn-addToTopList").click(function () {
+                setTimeout(function () {
+                    $(".btn-addToTopList").fadeOut(2000);
+                }, 3000);
+                });
+
+            
+
+        });
 
     </script>
 
+}
+
+@section playerstyles{
+    <link href="~/Content/themes/base/jquery-ui.css" rel="stylesheet" />
+    <link href="~/Content/rimac-player/AudioProgressBar.css" rel="stylesheet" type="text/css" />
 
 }

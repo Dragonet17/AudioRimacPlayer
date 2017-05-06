@@ -28,6 +28,9 @@ table td {
     -ms-transition: background-color 800ms linear;
     transition: background-color 800ms linear;
 }
+.songTopList {
+    display: none;
+}
 
     .song:hover {
         cursor: pointer;

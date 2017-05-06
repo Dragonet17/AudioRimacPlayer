@@ -349,10 +349,12 @@
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\player\GetJSScripts.js" />
     <Content Include="Scripts\player\AppendStylesJS.js" />
+    <Content Include="Scripts\player\jquery.random-fade-in.min.js" />
     <Content Include="Scripts\player\player-animations.js" />
     <Content Include="Scripts\player\player-functions.js" />
     <Content Include="Scripts\player\PlayerAjaxFunctions.js" />
     <Content Include="Scripts\player\SongsHover.js" />
+    <Content Include="Scripts\player\TopListHover.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />

@@ -5,6 +5,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
+using AudioRimacPlayer.DAL;
 using AudioRimacPlayer.Models;
 
 namespace AudioRimacPlayer.Controllers
@@ -17,7 +19,7 @@ namespace AudioRimacPlayer.Controllers
             return View();
         }
 
-        
+
         public ActionResult Error()
         {
             return View();
@@ -229,6 +231,7 @@ namespace AudioRimacPlayer.Controllers
             }
         }
 
+
         public ActionResult RenderParialView()
         {
             PlayerViewModel playerViewModel = new PlayerViewModel();
@@ -244,7 +247,7 @@ namespace AudioRimacPlayer.Controllers
                 return PartialView("_Error");
             }
         }
-
+        
         public async Task<ActionResult> MusicSong(string partialname, int id)
         {
             var playerViewModel = new PlayerViewModel();
@@ -257,72 +260,126 @@ namespace AudioRimacPlayer.Controllers
             {
                 return RedirectToAction("Music");
             }
-            switch (partialname)
+            try
             {
-                case "_MusicSongs":
-                    {
-                        var song = playerViewModel.Songs.ToList().Find(item => item.SongId == id);
-
-                        playerViewModel.MusicSong =
-                        await Models.Song.GetYouTubeVideoUrlForSong(song);
-
-                        break;
-                    }
-
-                case "_MusicAlbumsSongs":
-                    {
-
-                        playerViewModel.MusicSong =
-                            await Models.Song.GetYoutubeVideoUrlForAlbumSong(playerViewModel.AlbumSongs,id);
-                        break;
-                    }
-                default:
+                switch (partialname)
                 {
-                    return RedirectToAction("Error","Player");
+                    case "_MusicSongs":
+                        {
+                            var song = playerViewModel.Songs.ToList().Find(item => item.SongId == id);
+
+                            playerViewModel.MusicSong =
+                                await Models.Song.GetYouTubeVideoUrlForSong(song);
+
+                            break;
+                        }
+
+                    case "_MusicAlbumsSongs":
+                        {
+
+                            playerViewModel.MusicSong =
+                                await Models.Song.GetYoutubeVideoUrlForAlbumSong(playerViewModel.AlbumSongs, id);
+                            break;
+                        }
+
                 }
             }
+            catch (Exception)
+            {
+
+                return RedirectToAction("Error", "Player");
+
+            }
+
             Session["player"] = playerViewModel;
             return RedirectToAction("MusicPlayer");
         }
 
         public JsonResult GetMusicSong()
         {
-
-            var playerViewModel = (PlayerViewModel)Session["player"];
-            if (Session["player"] != null)
+            try
             {
-                playerViewModel = (PlayerViewModel)Session["player"];
+                var playerViewModel = (PlayerViewModel)Session["player"];
+                if (Session["player"] != null)
+                {
+                    playerViewModel = (PlayerViewModel)Session["player"];
+                }
+                else
+                {
+                    return null;
+                }
+                JsonSong song = new JsonSong(playerViewModel);
+              
+                return Json(song, JsonRequestBehavior.AllowGet);
+
             }
-            else
+            catch (Exception)
             {
                 return null;
             }
-            JsonSong song = new JsonSong
-            {
-                SongName = playerViewModel.MusicSong.SongName,
-                ArtistName = playerViewModel.MusicSong.ArtistName,
-                ImgUrl = playerViewModel.MusicSong.ArtistImagetUrl,
-                YouTubeUrl = playerViewModel.MusicSong.YouTubeUrl
-            };
-            
 
-            return Json(song, JsonRequestBehavior.AllowGet);
+
+
         }
+
+        private readonly PlayerContext _dbplayer = new PlayerContext();
+        public bool CheckIfSongIsInTopList()
+        {
+            var jsonSong = (JsonSong)GetMusicSong().Data;
+            
+            var song = _dbplayer.PlayerSongs.FirstOrDefault(s => s.SongYouTubeVideoUrl == jsonSong.YouTubeUrl && s.Deleted == false);
+
+            return song != null;
+        }
+        //Play Song
+
+
         public ActionResult MusicPlayer()
         {
+            var playerViewModel = (PlayerViewModel)Session["player"];
+            if (playerViewModel == null)
+            {
+                return RedirectToAction("Music");
+            }
+            ViewBag.CheckIfSongExistsInDb = CheckIfSongIsInTopList();
             return View();
         }
 
-        //Play Song
 
 
         // TOP LIST
 
-        public ActionResult TopList()
+        public async Task<ActionResult> TopList()
         {
-            return View();
+            var topSongs = await PlayerSong.RenderTopList(_dbplayer);
+
+            return View(topSongs);
         }
 
+        [HttpPost]
+        public async Task<ActionResult>  AddSongTheTheTopList()
+        {
+            var jsonSong = (JsonSong)GetMusicSong().Data;
+            
+            await  Task.Factory.StartNew(() =>
+            {
+               PlayerSong.AddToTheTopList(jsonSong,_dbplayer);
+            });
+
+            return  new EmptyResult();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> RemoveSongFromTheTopList(int id)
+        {
+            await Task.Factory.StartNew(() =>
+            {
+                PlayerSong.RemoveSongFromTheTopList(id, _dbplayer);
+            });
+
+            return new EmptyResult();
+        }
+      
         public ActionResult Test()
         {
             return View();

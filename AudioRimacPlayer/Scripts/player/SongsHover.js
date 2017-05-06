@@ -1,4 +1,4 @@
-﻿function SongsHover(parameters) {
+﻿function SongsHover() {
 
 $(".song").hover(
     function () {
@@ -30,6 +30,11 @@ $(".song").hover(
 );
 
 }
+$(document).ready(function () {
+    $(".btn-undo").hide();
+    SongsHover();
+
+});
 $(document).ajaxStop(function () {
     $(".btn-undo").hide();
     SongsHover();

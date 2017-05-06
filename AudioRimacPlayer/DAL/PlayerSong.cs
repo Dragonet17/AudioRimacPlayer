@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using AudioRimacPlayer.Models;
 
 namespace AudioRimacPlayer.DAL
 {
@@ -67,6 +68,44 @@ namespace AudioRimacPlayer.DAL
 
         }
 
+        public static void AddToTheTopList(JsonSong jsonSong, PlayerContext dbplayer)
+        {
+
+            PlayerSong playersong = new PlayerSong();
+
+            var song = dbplayer.PlayerSongs.FirstOrDefault(s => s.SongYouTubeVideoUrl == jsonSong.YouTubeUrl);
+
+            if (song != null)
+            {
+
+                if (song.Deleted)
+                {
+                    dbplayer.PlayerSongs.Attach(song);
+                    dbplayer.Entry(song).State = EntityState.Modified;
+                    song.Deleted = false;
+                    song.SongArtistImgUrl = jsonSong.ImgUrl;
+
+                    dbplayer.SaveChanges();
+                }
+
+
+            }
+            else
+            {
+                playersong.SongName = jsonSong.SongName;
+                playersong.SongArtist = jsonSong.ArtistName;
+                playersong.SongArtistImgUrl = jsonSong.ImgUrl;
+                playersong.SongYouTubeVideoUrl = jsonSong.YouTubeUrl;
+                playersong.Deleted = false;
+                dbplayer.PlayerSongs.Add(playersong);
+
+                dbplayer.SaveChanges();
+            }
+
+
+
+        }
+
         public static void RemoveSongFromTheTopList(int id, PlayerContext dbplayer)
         {
             var songToRemoving = dbplayer.PlayerSongs.FirstOrDefault(m => m.Id == id);
@@ -76,5 +115,6 @@ namespace AudioRimacPlayer.DAL
 
             dbplayer.SaveChanges();
         }
+
     }
 }
