@@ -22,19 +22,18 @@
     <script src="~/Scripts/player/jquery.random-fade-in.min.js"></script>
     <script>
 
-    $('.box-container').randomFadeIn(250, false);
+        $('.box-container').randomFadeIn(250, false);
 
 
-    $(document).ready(function() {
+        $(document).ready(function () {
 
-        $(".btn-removeFromTopList").click(function() {
-            setTimeout(function() {
-                    $(this).parent(".song-date").fadeOut(2000);
-                },
-                1000);
+            $(".btn-removeFromTopList").click(function () {
+
+                $(this).parent(".song-date").parent(".song").slideUp(2000);
+
+            });
+
         });
 
-    });
-    
     </script>
 }
