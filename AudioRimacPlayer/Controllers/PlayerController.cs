@@ -369,7 +369,7 @@ namespace AudioRimacPlayer.Controllers
             return  new EmptyResult();
         }
 
-        [HttpPost]
+       
         public async Task<ActionResult> RemoveSongFromTheTopList(int id)
         {
             await Task.Factory.StartNew(() =>
@@ -379,7 +379,8 @@ namespace AudioRimacPlayer.Controllers
 
             return new EmptyResult();
         }
-      
+
+
         public ActionResult Test()
         {
             return View();

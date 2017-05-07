@@ -26,9 +26,9 @@
                         <div class="song-date-artist col-xs-12 col-lg-12 ">@item.SongArtist</div>
                         @Ajax.ActionLink("x", "RemoveSongFromTheTopList", "Player",
                             new {id = item.Id},
-                            new AjaxOptions {HttpMethod = "Post", UpdateTargetId = "songs-reload", OnComplete = "ShowX"},
+                            new AjaxOptions {HttpMethod = "Post" },
                             new {@class = "btn btn-warning btn-sm btn-removeFromTopList"})
-
+                        @*<a href="@Url.Action("RemoveSongFromTheTopList", "Player", new { id = item.Id})" class="btn btn-warning btn-sm btn-removeFromTopList">x</a>*@
                         @*<button class="btn btn-warning btn-sm btn-removeFromTopList" type="submit" style="">x</button>*@
                     
                 </div>
