@@ -13,21 +13,22 @@ namespace AudioRimacPlayer
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-       //     routes.MapRoute(
-       //    name: "Song",
-       //   url: "{RimacPlayer}/{Song}",
-       //   defaults: new { controller = "Rimac", action = "Song" }
-       //);
-       //     routes.MapRoute(
-       //     name: "Music",
-       //    url: "{RimacPlayer}/{PlayMusic}/{id}",
-       //    defaults: new { controller = "Rimac", action = "PlayMusic" }
-       // );
-       //     routes.MapRoute(
-       //         name: "RimacPlayer",
-       //         url: "{RimacPlayer}/{LogIn}",
-       //         defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
-       //     );
+            //     routes.MapRoute(
+            //    name: "Song",
+            //   url: "{RimacPlayer}/{Song}",
+            //   defaults: new { controller = "Rimac", action = "Song" }
+            //);
+            //     routes.MapRoute(
+            //     name: "Music",
+            //    url: "{RimacPlayer}/{PlayMusic}/{id}",
+            //    defaults: new { controller = "Rimac", action = "PlayMusic" }
+            // );
+            //     routes.MapRoute(
+            //         name: "RimacPlayer",
+            //         url: "{RimacPlayer}/{LogIn}",
+            //         defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+            //     );
+
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",

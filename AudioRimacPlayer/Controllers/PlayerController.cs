@@ -13,7 +13,7 @@ namespace AudioRimacPlayer.Controllers
 {
     public class PlayerController : Controller
     {
-        // GET: Player
+    
         public ActionResult Index()
         {
             return View();
@@ -357,7 +357,7 @@ namespace AudioRimacPlayer.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult>  AddSongTheTheTopList()
+        public async Task<ActionResult>  AddSongToTheTopList()
         {
             var jsonSong = (JsonSong)GetMusicSong().Data;
             
@@ -384,6 +384,13 @@ namespace AudioRimacPlayer.Controllers
         public ActionResult Test()
         {
             return View();
+        }
+
+
+        public ActionResult Search()
+        {
+
+            return View("Search");
         }
     }
 }

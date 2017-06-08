@@ -38,13 +38,14 @@
 
                 </div>
 
+           
                 <div class="col-xs-10 col-lg-10">
                     <div style="position: absolute; left: 25px;top: 10px;">
                         <img id="youtube-btn-red" class="display-none" src="~/Content/rimac-player/img/yt-red.png" style="width: 25px; height: 25px; opacity: 1;" />
                         <img id="youtube-btn-black" src="~/Content/rimac-player/img/yt-black.png" style="width: 25px; height: 25px; opacity:1;" />
                         <div id="addSong">
                             @if (!ViewBag.CheckIfSongExistsInDb)
-                            { @Ajax.ActionLink("+", "AddSongTheTheTopList", "Player",
+                            { @Ajax.ActionLink("+", "AddSongToTheTopList", "Player",
 
                               new AjaxOptions { HttpMethod = "Post" },
                               new { @class = "btn btn-primary btn-sm btn-addToTopList" })

@@ -218,6 +218,7 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PlayerController.cs" />
     <Compile Include="Controllers\RimacController.cs" />
+    <Compile Include="DAL\AllowCrossSiteJsonAttribute.cs" />
     <Compile Include="DAL\PlayerContext.cs" />
     <Compile Include="DAL\PlayerSong.cs" />
     <Compile Include="DAL\SearchSong.cs" />
@@ -426,6 +427,8 @@
     <Content Include="Views\Player\Music.cshtml" />
     <Content Include="Views\Player\MusicPlayer.cshtml" />
     <Content Include="Views\Player\Error.cshtml" />
+    <Content Include="Views\Shared\Mobile.cshtml" />
+    <Content Include="Views\Player\Search.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

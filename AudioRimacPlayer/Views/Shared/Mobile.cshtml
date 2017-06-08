@@ -1,0 +1,80 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="~/Content/font-awesome.css" rel="stylesheet" />
+    <link href="~/Content/rimac-player/RimacStyles.css?v=<?=time();?" rel="stylesheet" type="text/css" />
+
+
+
+    <style>
+        .bsap {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <div></div>
+                @*@Html.ActionLink("Rimac", "Music", "Player", new { area = "" }, new { @class = "navbar-brand" })*@
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li></li>
+                    <li><a href="#">Top</a></li>
+
+                    @*<li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
+                </ul>
+                @*@Html.Partial("_LoginPartial")*@
+            </div>
+        </div>
+    </div>
+    <div id="container" class="container body-content">
+        @RenderBody()
+
+
+    </div>
+
+    <footer></footer>
+
+
+
+</body>
+<script src="~/Scripts/jquery-2.0.0.min.js"></script>
+<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<script src="~/Scripts/player/SongsHover.js"></script>
+<script>
+    var url = "http://api.therrax.pl/v1/values/GetSongs?search=love";
+    var somejson;
+    $.ajax({  
+        url: url,
+        type: "POST",
+        data: JSON.stringify(somejson),
+        dataType: "json",
+        success: function(response) {
+            var resp = JSON.parse(response);
+            alert(resp.status);
+        }
+    });
+
+
+    
+ 
+        </script>
+
+
+</html>
